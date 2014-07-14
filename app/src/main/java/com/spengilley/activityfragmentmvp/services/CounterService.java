@@ -12,10 +12,12 @@ import android.content.Intent;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.telephony.PhoneStateListener;
+import android.os.Binder;
 
 public class CounterService extends Service {
 
     private final String TAG = getClass().getName();
+    public String calls = "";
 
     /**
      * A Messenger that encapsulates the RequestHandler used to handle
@@ -31,8 +33,9 @@ public class CounterService extends Service {
         // A Messenger that encapsulates the RequestHandler used to
         // handle request Messages sent from the activity.
         mReqMessenger = new Messenger(new RequestHandler());
-        Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
+
         startTelephonyListener();
+        Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -46,50 +49,41 @@ public class CounterService extends Service {
     private void startTelephonyListener() {
 
         TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        mTelephonyMgr.listen(new TelephonyListener(getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
-
+        mTelephonyMgr.listen(new TelephonyListener(this, getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
     }
 
 
-    /**
-     * @class RequestHandler
-     *
-     * @brief This class handles messages sent by the UniqueIDGeneratorActivity.
-     */
     private class RequestHandler extends Handler {
         /**
          * Return a Message containing an ID that's unique
          * system-wide.
          */
-        private Message generateCall() {
-            String callID;
-
-            // Create a Message that's used to send the unique ID back
-            // to the UniqueIDGeneratorActivity.
+        private Message getCalls() {
             Message reply = Message.obtain();
             Bundle data = new Bundle();
-            data.putString("ID", "Call 1");
+            data.putString("ID", calls);
             reply.setData(data);
             return reply;
         }
 
-        // Hook method called back when a request Message arrives from
-        // the Activity.  The message it receives contains the Messenger used to reply to the Activity.
+        // Hook method called back when a request Message arrives from the UniqueIDGeneratorActivity.  
+        // The message it receives contains the Messenger used to reply to the Activity.
         public void handleMessage(Message request) {
 
-            // Store the reply Messenger so it doesn't change out from
-            // underneath us.
+            // Store the reply Messenger so it doesn't change out from underneath us.
             final Messenger replyMessenger = request.replyTo;
 
-            Message reply = generateCall();
+            // Put a runnable that generates a unique ID into the
+            // thread pool for subsequent concurrent processing.
+            Message reply = getCalls();
 
             try {
-                // Send the reply back to the activity.
+                // Send the reply back to the activity
                 replyMessenger.send(reply);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        };
+        }
     }
 
     public static String callID(Message replyMessage) {

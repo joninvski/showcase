@@ -11,6 +11,7 @@ import android.content.Intent;
 public class TelephonyListener extends PhoneStateListener
 {
     private Context mContext;
+    private CounterService mService;
     private STATE mCurrentState;
 
     private DateTime startRingTime;
@@ -18,8 +19,9 @@ public class TelephonyListener extends PhoneStateListener
     public enum STATE { STANDBY, CALLING, ANSWERED }
 
 
-    public TelephonyListener(Context context) {
+    public TelephonyListener(CounterService service, Context context) {
         mContext = context;
+        mService = service;
         mCurrentState = STATE.STANDBY;
     }
 
@@ -63,12 +65,14 @@ public class TelephonyListener extends PhoneStateListener
                 int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
                 Toast.makeText(mContext, "Ringtone lasted seconds: " + seconds , 10000).show();
                 mContext.getApplicationContext().sendBroadcast(new Intent("ReceivedCall"));
+                mService.calls = mService.calls + ("Declined after: " + Integer.toString(seconds) + "\n");
             }
 
             if(mCurrentState == STATE.CALLING && newState == STATE.STANDBY) {
                 int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
                 Toast.makeText(mContext, "Ringtone lasted seconds: " + seconds , 10000).show();
                 mContext.getApplicationContext().sendBroadcast(new Intent("ReceivedCall"));
+                mService.calls = mService.calls + ("Answered after: " + Integer.toString(seconds) + "\n");
             }
     }
 }

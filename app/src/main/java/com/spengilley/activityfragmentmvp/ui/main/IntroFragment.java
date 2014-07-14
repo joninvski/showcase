@@ -39,21 +39,25 @@ public class IntroFragment extends BaseFragment implements IntroView {
     IntroPresenterImpl presenter;
     private FragmentCallback callback;
     private View view;
-
     private TextView mCallsReceived;
-
-    private BroadcastReceiver onBroadcast = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context ctxt, Intent i) {
-            mCallsReceived.setText(mCallsReceived.getText().toString() + "Call received\n");
-            Toast.makeText(getActivity(), "Received broadcast receiver", 1000);
-        }
-    };
-
     private Button startService;
-
+    private Button getCalls;
     private Messenger mReqMessengerRef = null;
+    private CounterService mBoundService;
 
+
+    class ReplyHandler extends Handler {
+        /**
+         * Callback to handle the reply from the service
+         */
+        public void handleMessage(Message reply) {
+            // Get the unique ID encapsulated in reply Message.
+            String callID = CounterService.callID(reply);
+
+            // Display the unique ID.
+            mCallsReceived.setText(callID + "\n");
+        }
+    }
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -67,14 +71,11 @@ public class IntroFragment extends BaseFragment implements IntroView {
     public void onResume() {
         super.onResume();
         presenter.init(this);
-
-        getActivity().registerReceiver(onBroadcast, new IntentFilter("ReceivedCall"));
     }
 
     @Override
     public void onPause() {
 
-        getActivity().unregisterReceiver(onBroadcast);
         super.onPause();
     }
 
@@ -104,12 +105,21 @@ public class IntroFragment extends BaseFragment implements IntroView {
             }
         });
 
-
-        startService = (Button) view.findViewById(R.id.start_service);
+        getCalls = (Button) view.findViewById(R.id.get_calls);
+        getCalls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // presenter.getDetails();
+                Log.d(TAG, "Clicked getCalls");
+                getCalls();
+            }
+        });
     }
 
     private ServiceConnection mSvcConn = new ServiceConnection() {
+
         public void onServiceConnected(ComponentName className, IBinder binder) {
+            Log.d(TAG, "New service connection");
             mReqMessengerRef = new Messenger(binder);
         }
 
@@ -129,6 +139,27 @@ public class IntroFragment extends BaseFragment implements IntroView {
         }
     }
 
+    /**
+     * Called by Android when the user presses the "Generate Unique
+     * ID" button to request a new unique ID from the
+     * UniqueIDGeneratorService.
+     */
+    public void getCalls() {
+        // Create a request Message that indicates the Service should
+        // send the reply back to ReplyHandler encapsulated by the
+        // Messenger.
+        Message request = Message.obtain();
+        request.replyTo = new Messenger(new ReplyHandler());
+        
+        try {
+            if (mReqMessengerRef != null) {
+                Log.d(TAG, "sending message");
+                mReqMessengerRef.send(request);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
