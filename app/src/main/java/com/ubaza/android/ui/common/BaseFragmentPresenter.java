@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.common;
+package com.ubaza.android.ui.common;
 
 public interface BaseFragmentPresenter<T> {
     void init(T view);

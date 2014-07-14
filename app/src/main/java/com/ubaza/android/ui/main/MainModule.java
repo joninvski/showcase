@@ -1,13 +1,13 @@
-package com.spengilley.activityfragmentmvp.ui.main;
+package com.ubaza.android.ui.main;
 
-import com.spengilley.activityfragmentmvp.AppModule;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.DetailsPresenter;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.DetailsPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.IntroPresenter;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.IntroPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.MainPresenter;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.MainPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.views.MainView;
+import com.ubaza.android.AppModule;
+import com.ubaza.android.ui.main.presenters.DetailsPresenter;
+import com.ubaza.android.ui.main.presenters.DetailsPresenterImpl;
+import com.ubaza.android.ui.main.presenters.IntroPresenter;
+import com.ubaza.android.ui.main.presenters.IntroPresenterImpl;
+import com.ubaza.android.ui.main.presenters.MainPresenter;
+import com.ubaza.android.ui.main.presenters.MainPresenterImpl;
+import com.ubaza.android.ui.main.views.MainView;
 
 import javax.inject.Singleton;
 

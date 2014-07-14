@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main.presenters;
+package com.ubaza.android.ui.main.presenters;
 
 
 public interface MainPresenter {

@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp;
+package com.ubaza.android;
 
 import android.app.Application;
 

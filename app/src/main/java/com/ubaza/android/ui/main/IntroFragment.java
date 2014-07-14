@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main;
+package com.ubaza.android.ui.main;
 
 
 import android.app.Activity;
@@ -8,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.spengilley.activityfragmentmvp.R;
-import com.spengilley.activityfragmentmvp.ui.common.BaseFragment;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.IntroPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.views.IntroView;
+import com.ubaza.android.R;
+import com.ubaza.android.ui.common.BaseFragment;
+import com.ubaza.android.ui.main.presenters.IntroPresenterImpl;
+import com.ubaza.android.ui.main.views.IntroView;
 
 import javax.inject.Inject;
 import android.util.Log;
 import android.os.Handler;
 import android.os.Message;
-import com.spengilley.activityfragmentmvp.services.CounterService;
+import com.ubaza.android.services.CounterService;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.widget.Toast;

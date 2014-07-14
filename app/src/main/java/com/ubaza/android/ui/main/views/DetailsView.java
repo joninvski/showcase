@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main.views;
+package com.ubaza.android.ui.main.views;
 
 
 public interface DetailsView {

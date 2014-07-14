@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main;
+package com.ubaza.android.ui.main;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.spengilley.activityfragmentmvp.R;
-import com.spengilley.activityfragmentmvp.ui.common.BaseFragment;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.DetailsPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.views.DetailsView;
+import com.ubaza.android.R;
+import com.ubaza.android.ui.common.BaseFragment;
+import com.ubaza.android.ui.main.presenters.DetailsPresenterImpl;
+import com.ubaza.android.ui.main.views.DetailsView;
 
 import javax.inject.Inject;
 

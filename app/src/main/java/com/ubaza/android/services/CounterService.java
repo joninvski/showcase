@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.services;
+package com.ubaza.android.services;
 
 import android.app.Service;
 import android.os.Messenger;

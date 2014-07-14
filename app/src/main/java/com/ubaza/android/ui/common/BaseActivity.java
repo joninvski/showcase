@@ -1,9 +1,9 @@
-package com.spengilley.activityfragmentmvp.ui.common;
+package com.ubaza.android.ui.common;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.spengilley.activityfragmentmvp.App;
+import com.ubaza.android.App;
 
 import java.util.List;
 

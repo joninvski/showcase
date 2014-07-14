@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main;
+package com.ubaza.android.ui.main;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,11 +13,11 @@ import android.util.Log;
 
 import android.widget.Toast;
 
-import com.spengilley.activityfragmentmvp.R;
-import com.spengilley.activityfragmentmvp.services.CounterService;
-import com.spengilley.activityfragmentmvp.ui.common.BaseActivity;
-import com.spengilley.activityfragmentmvp.ui.main.presenters.MainPresenterImpl;
-import com.spengilley.activityfragmentmvp.ui.main.views.MainView;
+import com.ubaza.android.R;
+import com.ubaza.android.services.CounterService;
+import com.ubaza.android.ui.common.BaseActivity;
+import com.ubaza.android.ui.main.presenters.MainPresenterImpl;
+import com.ubaza.android.ui.main.views.MainView;
 
 import java.util.Arrays;
 import java.util.List;

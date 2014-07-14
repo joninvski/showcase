@@ -1,7 +1,7 @@
-package com.spengilley.activityfragmentmvp.ui.main.presenters;
+package com.ubaza.android.ui.main.presenters;
 
 
-import com.spengilley.activityfragmentmvp.ui.main.views.DetailsView;
+import com.ubaza.android.ui.main.views.DetailsView;
 
 import javax.inject.Inject;
 

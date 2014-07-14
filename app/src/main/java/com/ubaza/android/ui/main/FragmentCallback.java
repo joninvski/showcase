@@ -1,4 +1,4 @@
-package com.spengilley.activityfragmentmvp.ui.main;
+package com.ubaza.android.ui.main;
 
 /**
  * Created by stephen pengilley on 29/06/2014.
