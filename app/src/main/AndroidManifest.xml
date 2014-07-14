@@ -19,8 +19,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.CounterService"
-                 android:exported="true">
+        <service android:name=".services.CounterService" >
         </service>
     </application>
 

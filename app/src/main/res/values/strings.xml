@@ -2,13 +2,8 @@
 <resources>
 
     <string name="app_name">Ubaza Client App</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="intro_text">This is an intro fragment with a simple button</string>
-    <string name="intro_button_label">Go to details</string>
     <string name="start_service">Start the service</string>
-    <string name="get_calls">Get calls</string>
     <string name="finish">Finish</string>
     <string name="get_details">Get Details</string>
-    <string name="action_settings">Settings</string>
 
 </resources>

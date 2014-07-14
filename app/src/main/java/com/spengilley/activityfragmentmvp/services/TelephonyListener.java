@@ -63,14 +63,12 @@ public class TelephonyListener extends PhoneStateListener
             /* Check if the phone was ringing and user answered the call */
             if(mCurrentState == STATE.CALLING && newState == STATE.ANSWERED) {
                 int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
-                Toast.makeText(mContext, "Ringtone lasted seconds: " + seconds , 10000).show();
                 mContext.getApplicationContext().sendBroadcast(new Intent("ReceivedCall"));
                 mService.calls = mService.calls + ("Declined after: " + Integer.toString(seconds) + "\n");
             }
 
             if(mCurrentState == STATE.CALLING && newState == STATE.STANDBY) {
                 int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
-                Toast.makeText(mContext, "Ringtone lasted seconds: " + seconds , 10000).show();
                 mContext.getApplicationContext().sendBroadcast(new Intent("ReceivedCall"));
                 mService.calls = mService.calls + ("Answered after: " + Integer.toString(seconds) + "\n");
             }
