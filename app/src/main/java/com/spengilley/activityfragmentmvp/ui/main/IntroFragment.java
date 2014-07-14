@@ -14,13 +14,31 @@ import com.spengilley.activityfragmentmvp.ui.main.presenters.IntroPresenterImpl;
 import com.spengilley.activityfragmentmvp.ui.main.views.IntroView;
 
 import javax.inject.Inject;
+import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
+import com.spengilley.activityfragmentmvp.services.CounterService;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.widget.Toast;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.content.ComponentName;
+import android.os.IBinder;
 
 public class IntroFragment extends BaseFragment implements IntroView {
+
+    private static final String TAG = "IntroFragment";
     @Inject
     IntroPresenterImpl presenter;
     private FragmentCallback callback;
     private View view;
+
     private Button loadDetails;
+    private Button bt_getCalls;
+
+    private Messenger mReqMessengerRef = null;
+
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -50,14 +68,92 @@ public class IntroFragment extends BaseFragment implements IntroView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bt_getCalls = (Button) view.findViewById(R.id.get_calls);
+        bt_getCalls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // presenter.getDetails();
+                getCalls();
+                Log.d(TAG, "Clicked getCalls");
+            }
+        });
+
         // Initialize button with listener
-        loadDetails = (Button) view.findViewById(R.id.load_details);
+        loadDetails = (Button) view.findViewById(R.id.start_service);
         loadDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getDetails();
+                // presenter.getDetails();
+                startCallListenerService();
+                Log.d(TAG, "Clicked view");
             }
         });
+
+        loadDetails = (Button) view.findViewById(R.id.start_service);
+    }
+
+    class ReplyHandler extends Handler {
+        /**
+         * Callback to handle the reply from the UniqueIDGeneratorService.
+         */
+        public void handleMessage(Message reply) {
+            // Get the unique ID encapsulated in reply Message.
+            String uniqueID = CounterService.uniqueID(reply);
+
+            Log.d(TAG, "Got result" + uniqueID);
+        }
+    }
+
+    /** 
+     * This ServiceConnection is used to receive a Messenger reference
+     * after binding to the UniqueIDGeneratorService using bindService().
+     */
+    private ServiceConnection mSvcConn = new ServiceConnection() {
+            /**
+             * Called after the UniqueIDGeneratorService is connected to
+             * convey the result returned from onBind().
+             */
+            public void onServiceConnected(ComponentName className, IBinder binder) {
+                mReqMessengerRef = new Messenger(binder);
+            }
+
+            /**
+             * Called if the Service crashes and is no longer
+             * available.  The ServiceConnection will remain bound,
+             * but the Service will not respond to any requests.
+             */
+            public void onServiceDisconnected(ComponentName className) {
+                Log.d(TAG, "Service has crashed");
+                mReqMessengerRef = null;
+            }
+	};
+
+    public void startCallListenerService() {
+        Log.d(TAG, "calling bindService()");
+        if (mReqMessengerRef == null) {
+            // Bind to the UniqueIDGeneratorService associated with this Intent.
+            getActivity().bindService(CounterService.makeIntent(getActivity()),
+                        mSvcConn,
+                        Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    public void getCalls() {
+        // Create a request Message that indicates the Service should
+        // send the reply back to ReplyHandler encapsulated by the
+        // Messenger.
+        Message request = Message.obtain();
+        request.replyTo = new Messenger(new ReplyHandler());
+        
+        Log.d(TAG, "Inside getCalls");
+        try {
+            if (mReqMessengerRef != null) {
+                Log.d(TAG, "sending message");
+                mReqMessengerRef.send(request);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,4 +172,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
         // Ask callback to load details fragment
         callback.loadDetailFragment();
     }
+
+
+
 }

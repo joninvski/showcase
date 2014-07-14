@@ -1,10 +1,20 @@
 package com.spengilley.activityfragmentmvp.ui.main;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Messenger;
+
+import android.util.Log;
+
 import android.widget.Toast;
 
 import com.spengilley.activityfragmentmvp.R;
+import com.spengilley.activityfragmentmvp.services.CounterService;
 import com.spengilley.activityfragmentmvp.ui.common.BaseActivity;
 import com.spengilley.activityfragmentmvp.ui.main.presenters.MainPresenterImpl;
 import com.spengilley.activityfragmentmvp.ui.main.views.MainView;
@@ -16,6 +26,8 @@ import javax.inject.Inject;
 
 
 public class MainActivity extends BaseActivity implements MainView, FragmentCallback {
+    private final static String TAG = "MAINACTIVITY";
+
     @Inject
     MainPresenterImpl presenter;
 
@@ -27,16 +39,6 @@ public class MainActivity extends BaseActivity implements MainView, FragmentCall
         // Load IntroFragment
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, IntroFragment.newInstance()).commit();
-
-        // Just for fun, display a delayed toast using presenter
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                presenter.getImaginaryString();
-            }
-        }, 2000);
-
-
     }
 
 
@@ -59,9 +61,14 @@ public class MainActivity extends BaseActivity implements MainView, FragmentCall
         finish();
     }
 
-    // View method
+    /**
+     * Hook method called by Android when this Activity becomes
+     * visible.
+     */
     @Override
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart()");
+
     }
 }

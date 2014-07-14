@@ -13,11 +13,9 @@ public class MainPresenterImpl implements MainPresenter {
         this.view = view;
     }
 
-
     @Override
     public void getImaginaryString() {
         // Could connect to our models to get stuff here
         String message = "Hello world, from Presenter";
-        view.showToast(message);
     }
 }
