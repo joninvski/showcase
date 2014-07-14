@@ -25,6 +25,9 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.content.ComponentName;
 import android.os.IBinder;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 public class IntroFragment extends BaseFragment implements IntroView {
 
@@ -33,6 +36,13 @@ public class IntroFragment extends BaseFragment implements IntroView {
     IntroPresenterImpl presenter;
     private FragmentCallback callback;
     private View view;
+
+    private BroadcastReceiver onBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context ctxt, Intent i) {
+            Toast.makeText(getActivity(), "Received broadcast receiver", 1000);
+        }
+    };
 
     private Button startService;
 
@@ -50,13 +60,23 @@ public class IntroFragment extends BaseFragment implements IntroView {
     @Override
     public void onResume() {
         super.onResume();
-
         presenter.init(this);
+
+        getActivity().registerReceiver(onBroadcast, new IntentFilter("ReceivedCall"));
     }
 
     @Override
+    public void onPause() {
+
+        getActivity().unregisterReceiver(onBroadcast);
+        super.onPause();
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_intro, container, false);
         return view;
@@ -74,76 +94,35 @@ public class IntroFragment extends BaseFragment implements IntroView {
             public void onClick(View v) {
                 // presenter.getDetails();
                 startCallListenerService();
-                Log.d(TAG, "Clicked view");
+                Log.d(TAG, "Clicked start service view");
             }
         });
+
 
         startService = (Button) view.findViewById(R.id.start_service);
     }
 
-    class ReplyHandler extends Handler {
-        /**
-         * Callback to handle the reply from the UniqueIDGeneratorService.
-         */
-        public void handleMessage(Message reply) {
-            // Get the unique ID encapsulated in reply Message.
-            String uniqueID = CounterService.callID(reply);
-
-            Log.d(TAG, "Got result" + uniqueID);
-        }
-    }
-
-    /**
-     * This ServiceConnection is used to receive a Messenger reference
-     * after binding to the UniqueIDGeneratorService using bindService().
-     */
     private ServiceConnection mSvcConn = new ServiceConnection() {
-            /**
-             * Called after the UniqueIDGeneratorService is connected to
-             * convey the result returned from onBind().
-             */
-            public void onServiceConnected(ComponentName className, IBinder binder) {
-                mReqMessengerRef = new Messenger(binder);
-            }
+        public void onServiceConnected(ComponentName className, IBinder binder) {
+            mReqMessengerRef = new Messenger(binder);
+        }
 
-            /**
-             * Called if the Service crashes and is no longer
-             * available.  The ServiceConnection will remain bound,
-             * but the Service will not respond to any requests.
-             */
-            public void onServiceDisconnected(ComponentName className) {
-                Log.d(TAG, "Service has crashed");
-                mReqMessengerRef = null;
-            }
-	};
+        public void onServiceDisconnected(ComponentName className) {
+            Log.d(TAG, "Service has crashed");
+            mReqMessengerRef = null;
+        }
+    };
 
     public void startCallListenerService() {
         Log.d(TAG, "calling bindService()");
         if (mReqMessengerRef == null) {
             // Bind to the UniqueIDGeneratorService associated with this Intent.
             getActivity().bindService(CounterService.makeIntent(getActivity()),
-                        mSvcConn,
-                        Context.BIND_AUTO_CREATE);
+                    mSvcConn,
+                    Context.BIND_AUTO_CREATE);
         }
     }
 
-    public void getCalls() {
-        // Create a request Message that indicates the Service should
-        // send the reply back to ReplyHandler encapsulated by the
-        // Messenger.
-        Message request = Message.obtain();
-        request.replyTo = new Messenger(new ReplyHandler());
-
-        Log.d(TAG, "Inside getCalls");
-        try {
-            if (mReqMessengerRef != null) {
-                Log.d(TAG, "sending message");
-                mReqMessengerRef.send(request);
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {
