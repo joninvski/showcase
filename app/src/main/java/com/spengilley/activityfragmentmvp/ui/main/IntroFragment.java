@@ -28,6 +28,9 @@ import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.widget.EditText;
+
+import android.widget.TextView;
 
 public class IntroFragment extends BaseFragment implements IntroView {
 
@@ -37,9 +40,12 @@ public class IntroFragment extends BaseFragment implements IntroView {
     private FragmentCallback callback;
     private View view;
 
+    private TextView mCallsReceived;
+
     private BroadcastReceiver onBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context ctxt, Intent i) {
+            mCallsReceived.setText(mCallsReceived.getText().toString() + "Call received\n");
             Toast.makeText(getActivity(), "Received broadcast receiver", 1000);
         }
     };
@@ -75,10 +81,10 @@ public class IntroFragment extends BaseFragment implements IntroView {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_intro, container, false);
+        mCallsReceived = (TextView) view.findViewById(R.id.received_ringtones);
         return view;
     }
 
