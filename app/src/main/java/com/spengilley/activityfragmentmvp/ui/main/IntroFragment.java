@@ -41,7 +41,6 @@ public class IntroFragment extends BaseFragment implements IntroView {
     private View view;
     private TextView mCallsReceived;
     private Button startService;
-    private Button getCalls;
     private Messenger mReqMessengerRef = null;
     private CounterService mBoundService;
 
@@ -71,6 +70,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
     public void onResume() {
         super.onResume();
         presenter.init(this);
+        getCalls();
     }
 
     @Override
@@ -102,16 +102,6 @@ public class IntroFragment extends BaseFragment implements IntroView {
                 // presenter.getDetails();
                 startCallListenerService();
                 Log.d(TAG, "Clicked start service view");
-            }
-        });
-
-        getCalls = (Button) view.findViewById(R.id.get_calls);
-        getCalls.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // presenter.getDetails();
-                Log.d(TAG, "Clicked getCalls");
-                getCalls();
             }
         });
     }
@@ -150,7 +140,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
         // Messenger.
         Message request = Message.obtain();
         request.replyTo = new Messenger(new ReplyHandler());
-        
+
         try {
             if (mReqMessengerRef != null) {
                 Log.d(TAG, "sending message");
