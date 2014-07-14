@@ -10,6 +10,8 @@ import android.os.RemoteException;
 import android.os.IBinder;
 import android.content.Intent;
 import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.telephony.PhoneStateListener;
 
 public class CounterService extends Service {
 
@@ -17,7 +19,7 @@ public class CounterService extends Service {
 
     /**
      * A Messenger that encapsulates the RequestHandler used to handle
-     * request Messages sent from the UniqueIDGeneratorActivity.
+     * request Messages sent from the activity.
      */
     private Messenger mReqMessenger = null;
 
@@ -27,27 +29,32 @@ public class CounterService extends Service {
     @Override
     public void onCreate() {
         // A Messenger that encapsulates the RequestHandler used to
-        // handle request Messages sent from the
-        // UniqueIDGeneratorActivity.
+        // handle request Messages sent from the activity.
         mReqMessenger = new Messenger(new RequestHandler());
         Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
+        startTelephonyListener();
     }
 
     /**
      * Factory method to make the desired Intent.
      */
     public static Intent makeIntent(Context context) {
-        // Create the Intent that's associated to the
-        // UniqueIDGeneratorService class.
+        // Create the Intent that's associated to the CounterService class.
         return new Intent(context, CounterService.class);
+    }
+
+    private void startTelephonyListener() {
+
+        TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        mTelephonyMgr.listen(new TelephonyListener(getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
+
     }
 
 
     /**
      * @class RequestHandler
      *
-     * @brief This class handles messages sent by the
-     *        UniqueIDGeneratorActivity.
+     * @brief This class handles messages sent by the UniqueIDGeneratorActivity.
      */
     private class RequestHandler extends Handler {
         /**
@@ -55,7 +62,7 @@ public class CounterService extends Service {
          * system-wide.
          */
         private Message generateCall() {
-            String uniqueID;
+            String callID;
 
             // Create a Message that's used to send the unique ID back
             // to the UniqueIDGeneratorActivity.
@@ -67,21 +74,17 @@ public class CounterService extends Service {
         }
 
         // Hook method called back when a request Message arrives from
-        // the UniqueIDGeneratorActivity.  The message it receives
-        // contains the Messenger used to reply to the Activity.
+        // the Activity.  The message it receives contains the Messenger used to reply to the Activity.
         public void handleMessage(Message request) {
 
             // Store the reply Messenger so it doesn't change out from
             // underneath us.
             final Messenger replyMessenger = request.replyTo;
 
-            // Put a runnable that generates a unique ID into the
-            // thread pool for subsequent concurrent processing.
             Message reply = generateCall();
 
             try {
-                // Send the reply back to the
-                // UniqueIDGeneratorActivity.
+                // Send the reply back to the activity.
                 replyMessenger.send(reply);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -89,7 +92,7 @@ public class CounterService extends Service {
         };
     }
 
-    public static String uniqueID(Message replyMessage) {
+    public static String callID(Message replyMessage) {
         return replyMessage.getData().getString("ID");
     }
 

@@ -34,8 +34,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
     private FragmentCallback callback;
     private View view;
 
-    private Button loadDetails;
-    private Button bt_getCalls;
+    private Button startService;
 
     private Messenger mReqMessengerRef = null;
 
@@ -68,19 +67,9 @@ public class IntroFragment extends BaseFragment implements IntroView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bt_getCalls = (Button) view.findViewById(R.id.get_calls);
-        bt_getCalls.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // presenter.getDetails();
-                getCalls();
-                Log.d(TAG, "Clicked getCalls");
-            }
-        });
-
         // Initialize button with listener
-        loadDetails = (Button) view.findViewById(R.id.start_service);
-        loadDetails.setOnClickListener(new View.OnClickListener() {
+        startService = (Button) view.findViewById(R.id.start_service);
+        startService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // presenter.getDetails();
@@ -89,7 +78,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
             }
         });
 
-        loadDetails = (Button) view.findViewById(R.id.start_service);
+        startService = (Button) view.findViewById(R.id.start_service);
     }
 
     class ReplyHandler extends Handler {
@@ -98,13 +87,13 @@ public class IntroFragment extends BaseFragment implements IntroView {
          */
         public void handleMessage(Message reply) {
             // Get the unique ID encapsulated in reply Message.
-            String uniqueID = CounterService.uniqueID(reply);
+            String uniqueID = CounterService.callID(reply);
 
             Log.d(TAG, "Got result" + uniqueID);
         }
     }
 
-    /** 
+    /**
      * This ServiceConnection is used to receive a Messenger reference
      * after binding to the UniqueIDGeneratorService using bindService().
      */
@@ -144,7 +133,7 @@ public class IntroFragment extends BaseFragment implements IntroView {
         // Messenger.
         Message request = Message.obtain();
         request.replyTo = new Messenger(new ReplyHandler());
-        
+
         Log.d(TAG, "Inside getCalls");
         try {
             if (mReqMessengerRef != null) {
@@ -172,7 +161,4 @@ public class IntroFragment extends BaseFragment implements IntroView {
         // Ask callback to load details fragment
         callback.loadDetailFragment();
     }
-
-
-
 }
