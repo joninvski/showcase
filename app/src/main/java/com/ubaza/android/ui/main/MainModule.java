@@ -1,8 +1,6 @@
 package com.ubaza.android.ui.main;
 
 import com.ubaza.android.AppModule;
-import com.ubaza.android.ui.main.presenters.DetailsPresenter;
-import com.ubaza.android.ui.main.presenters.DetailsPresenterImpl;
 import com.ubaza.android.ui.main.presenters.IntroPresenter;
 import com.ubaza.android.ui.main.presenters.IntroPresenterImpl;
 import com.ubaza.android.ui.main.presenters.MainPresenter;
@@ -19,7 +17,6 @@ import dagger.Provides;
         injects = {
                 MainActivity.class,
                 IntroFragment.class,
-                DetailsFragment.class
         },
         complete = false,
         library = true
@@ -59,15 +56,4 @@ public class MainModule {
     public IntroPresenter provideIntroPresenter() {
         return new IntroPresenterImpl();
     }
-
-
-    /**
-     * Provide DetailsPresenter
-     */
-    @Provides
-    @Singleton
-    public DetailsPresenter provideDetailsPresenter() {
-        return new DetailsPresenterImpl();
-    }
-
 }

@@ -23,6 +23,5 @@ public class IntroPresenterImpl implements IntroPresenter {
     public void getDetails() {
         // Do stuff to get details
         // then report back to view
-        view.loadDetailsFragment();
     }
 }

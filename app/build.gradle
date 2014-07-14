@@ -4,14 +4,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.9.+'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     }
 }
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
-apply plugin: 'spoon'
 
 android {
     compileSdkVersion 20
@@ -37,4 +35,5 @@ dependencies {
     compile 'com.squareup.dagger:dagger-compiler:1.0.1'
     compile 'com.squareup.dagger:dagger:1.0.1'
     compile 'joda-time:joda-time:2.3'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.+'
 }

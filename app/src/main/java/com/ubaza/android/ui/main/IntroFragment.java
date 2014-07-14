@@ -37,7 +37,6 @@ public class IntroFragment extends BaseFragment implements IntroView {
     private static final String TAG = "IntroFragment";
     @Inject
     IntroPresenterImpl presenter;
-    private FragmentCallback callback;
     private View view;
     private TextView mCallsReceived;
     private Button startService;
@@ -154,17 +153,6 @@ public class IntroFragment extends BaseFragment implements IntroView {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // Bit naughty but we know it will work!
-        callback = (FragmentCallback) activity;
     }
 
-    /**
-     * View implementation
-     */
-    @Override
-    public void loadDetailsFragment() {
-        // Ask callback to load details fragment
-        callback.loadDetailFragment();
-    }
 }

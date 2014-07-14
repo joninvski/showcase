@@ -25,7 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity implements MainView, FragmentCallback {
+public class MainActivity extends BaseActivity implements MainView {
     private final static String TAG = "MAINACTIVITY";
 
     @Inject
@@ -45,20 +45,6 @@ public class MainActivity extends BaseActivity implements MainView, FragmentCall
     @Override
     protected List<Object> getModules() {
         return Arrays.<Object>asList(new MainModule(this));
-    }
-
-    /**
-     * FragmentCallback implementation
-     */
-    @Override
-    public void loadDetailFragment() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, DetailsFragment.newInstance()).commit();
-    }
-
-    @Override
-    public void finishProcess() {
-        finish();
     }
 
     /**
