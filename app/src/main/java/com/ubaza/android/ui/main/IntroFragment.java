@@ -98,7 +98,7 @@ public class IntroFragment extends BaseFragment {
 
     @Subscribe
     public void setRingtones(ArrayList<Ringtone> ringToneList) {
-        Toast.makeText(getActivity(), "Received Otto", Toast.LENGTH_SHORT).show();
+        Timber.d("Setting the ringtones in the view (called by otto)");
         StringBuilder sBuild = new StringBuilder();
         for( Ringtone ring : ringToneList )
             sBuild.append(ring.toString() + '\n');
