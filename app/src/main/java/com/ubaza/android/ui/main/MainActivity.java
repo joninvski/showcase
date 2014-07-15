@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Messenger;
 
-import android.util.Log;
-
 import android.widget.Toast;
 
 import com.ubaza.android.R;
@@ -25,7 +23,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
-    private final static String TAG = "MAINACTIVITY";
 
     @DebugLog
     @Override
@@ -37,7 +34,6 @@ public class MainActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, IntroFragment.newInstance()).commit();
     }
-
 
     @DebugLog
     @Override
@@ -53,7 +49,5 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart()");
-
     }
 }

@@ -1,12 +1,18 @@
 package com.ubaza.android;
 
 import android.app.Application;
+
 import android.content.Context;
 
-import dagger.ObjectGraph;
 import com.squareup.otto.Bus;
+
+import dagger.ObjectGraph;
+
 import javax.inject.Inject;
 
+import static timber.log.Timber.DebugTree;
+
+import timber.log.Timber;
 
 public class App extends Application {
     private ObjectGraph objectGraph;
@@ -29,6 +35,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Timber.plant(new DebugTree());
         buildObjectGraphAndInject();
         if(mBus == null) mBus = new Bus();
     }

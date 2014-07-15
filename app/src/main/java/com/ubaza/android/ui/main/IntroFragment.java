@@ -17,8 +17,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,18 +50,19 @@ import retrofit.RestAdapter;
 
 import retrofit.RetrofitError;
 import java.lang.StringBuilder;
+import timber.log.Timber;
 
 public class IntroFragment extends BaseFragment {
 
-    private static final String TAG = "IntroFragment";
+    private CounterService mCounterService;
+    private ServiceConnection mSvcConn = startService();
+    private UbazaRestClient ubazaRest;
 
+    /* Fragment views */
     private TextView tvCallsReceived;
     private TextView tvRingtones;
     private Button btStartService;
     private Button btGetRingtones;
-    private CounterService mCounterService;
-    private ServiceConnection mSvcConn = startService();
-    private UbazaRestClient ubazaRest;
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -76,13 +75,13 @@ public class IntroFragment extends BaseFragment {
     public ServiceConnection startService() {
         return new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder service) {
-                Log.d(TAG, "New service connection");
+                Timber.d("New service connection to:  %s \n", className);
                 CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
                 mCounterService = binder.getService();
             }
 
             public void onServiceDisconnected(ComponentName className) {
-                Log.d(TAG, "Service has crashed");
+                Timber.d("Service has crashed", className);
             }
         };
     }
@@ -91,7 +90,7 @@ public class IntroFragment extends BaseFragment {
         ubazaRest.getRingtones();
     }
 
-    @Subscribe 
+    @Subscribe
     public void setRingtones(ArrayList<Ringtone> ringToneList) {
         Toast.makeText(getActivity(), "Received Otto", Toast.LENGTH_SHORT).show();
         StringBuilder sBuild = new StringBuilder();
@@ -138,8 +137,8 @@ public class IntroFragment extends BaseFragment {
         btStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Timber.d("Clicked start service view");
                 startCallListenerService();
-                Log.d(TAG, "Clicked start service view");
             }
         });
 
@@ -147,15 +146,15 @@ public class IntroFragment extends BaseFragment {
         btGetRingtones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Timber.d("Clicked getRingtones");
                 restTest();
-                Log.d(TAG, "Clicked getRingtones");
             }
         });
     }
 
     @DebugLog
     public void startCallListenerService() {
-        Log.d(TAG, "calling bindService()");
+        Timber.d("Calling bindService()");
         getActivity().bindService(CounterService.makeIntent(getActivity()),
                 mSvcConn,
                 Context.BIND_AUTO_CREATE);

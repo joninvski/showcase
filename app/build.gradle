@@ -39,6 +39,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.6.+'
     compile 'com.jakewharton.hugo:hugo-runtime:1.1.+'
     compile 'com.squareup:otto:1.3.+'
+    compile 'com.jakewharton.timber:timber:2.4.+'
     compile project(':domain')
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.+'
 }
