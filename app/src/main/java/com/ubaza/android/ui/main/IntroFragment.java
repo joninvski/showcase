@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.InjectView;
+
 import com.squareup.otto.Subscribe;
 
 import com.ubaza.android.R;
@@ -36,6 +38,8 @@ import com.ubaza.domain.Ringtone;
 import com.ubaza.rest.UbazaRestClient;
 
 import hugo.weaving.DebugLog;
+
+import java.lang.StringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +53,10 @@ import retrofit.client.Response;
 import retrofit.RestAdapter;
 
 import retrofit.RetrofitError;
-import java.lang.StringBuilder;
+
 import timber.log.Timber;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class IntroFragment extends BaseFragment {
 
@@ -59,10 +65,10 @@ public class IntroFragment extends BaseFragment {
     private UbazaRestClient ubazaRest;
 
     /* Fragment views */
-    private TextView tvCallsReceived;
-    private TextView tvRingtones;
-    private Button btStartService;
-    private Button btGetRingtones;
+    @InjectView(R.id.received_calls) TextView tvCallsReceived;
+    @InjectView(R.id.ringtones) TextView tvRingtones;
+    @InjectView(R.id.start_service) Button btStartService;
+    @InjectView(R.id.get_ringtones) Button btGetRingtones;
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -120,8 +126,6 @@ public class IntroFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_intro, container, false);
-        tvCallsReceived = (TextView) view.findViewById(R.id.received_calls);
-        tvRingtones = (TextView) view.findViewById(R.id.ringtones);
         ubazaRest = new UbazaRestClient(getBus());
 
         return view;
@@ -131,25 +135,19 @@ public class IntroFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
+    }
 
-        // Initialize button with listener
-        btStartService = (Button) view.findViewById(R.id.start_service);
-        btStartService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Timber.d("Clicked start service view");
-                startCallListenerService();
-            }
-        });
+    @OnClick(R.id.start_service)
+    public void clickedStartServer() {
+        Timber.d("Clicked start service view");
+        startCallListenerService();
+    }
 
-        btGetRingtones = (Button) view.findViewById(R.id.get_ringtones);
-        btGetRingtones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Timber.d("Clicked getRingtones");
-                restTest();
-            }
-        });
+    @OnClick(R.id.get_ringtones)
+    public void clickedGetRingtones() {
+        Timber.d("Clicked getRingtones");
+        restTest();
     }
 
     @DebugLog
