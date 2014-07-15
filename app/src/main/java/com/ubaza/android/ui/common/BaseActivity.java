@@ -51,13 +51,14 @@ public abstract class BaseActivity extends Activity {
     public void startCallListenerService() {
         Timber.d("Calling bindService()");
         bindService(CounterService.makeIntent(this), mSvcConn, Context.BIND_AUTO_CREATE);
+        startService(CounterService.makeIntent(this));
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         activityGraph = null;
+        unbindService(mSvcConn);
     }
 
     public CounterService getCounterService() {

@@ -140,6 +140,7 @@ public class IntroFragment extends BaseFragment {
     public void getCalls() {
         if(getCounterService() != null) {
             List<Call> calls = getCounterService().getCalls();
+            Timber.d("%s", Call.toString(calls));
         }
     }
 
