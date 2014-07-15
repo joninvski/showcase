@@ -41,11 +41,24 @@ import java.util.List;
 public class IntroFragment extends BaseFragment {
 
     private static final String TAG = "IntroFragment";
-    private View view;
-    private TextView mCallsReceived;
-    private Button startService;
-    private Messenger mReqMessengerRef = null;
+
+    private TextView tvCallsReceived;
+    private Button btStartService;
     private CounterService mCounterService;
+
+    private ServiceConnection mSvcConn = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.d(TAG, "New service connection");
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
+            mCounterService = binder.getService();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            Log.d(TAG, "Service has crashed");
+        }
+    };
+
 
 
     public static IntroFragment newInstance() {
@@ -73,8 +86,8 @@ public class IntroFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_intro, container, false);
-        mCallsReceived = (TextView) view.findViewById(R.id.received_ringtones);
+        final View view = inflater.inflate(R.layout.fragment_intro, container, false);
+        tvCallsReceived = (TextView) view.findViewById(R.id.received_ringtones);
         return view;
     }
 
@@ -84,8 +97,8 @@ public class IntroFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize button with listener
-        startService = (Button) view.findViewById(R.id.start_service);
-        startService.setOnClickListener(new View.OnClickListener() {
+        btStartService = (Button) view.findViewById(R.id.start_service);
+        btStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // presenter.getDetails();
@@ -95,43 +108,25 @@ public class IntroFragment extends BaseFragment {
         });
     }
 
-    private ServiceConnection mSvcConn = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG, "New service connection");
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
-            mCounterService = binder.getService();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            Log.d(TAG, "Service has crashed");
-        }
-    };
-
+    @DebugLog
     public void startCallListenerService() {
         Log.d(TAG, "calling bindService()");
-        if (mReqMessengerRef == null) {
-            // Bind to the UniqueIDGeneratorService associated with this Intent.
-            getActivity().bindService(CounterService.makeIntent(getActivity()),
-                    mSvcConn,
-                    Context.BIND_AUTO_CREATE);
-        }
+        getActivity().bindService(CounterService.makeIntent(getActivity()),
+                mSvcConn,
+                Context.BIND_AUTO_CREATE);
     }
 
-    /**
-     * Called by Android when the user presses the "Generate Unique
-     * ID" button to request a new unique ID from the activity
-     */
+    @DebugLog
     public void getCalls() {
         if(mCounterService != null) {
             List<Call> calls = mCounterService.getCalls();
-            mCallsReceived.setText(Call.toString(calls));
+            tvCallsReceived.setText(Call.toString(calls));
         }
     }
 
     @Override
+    @DebugLog
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
-
 }

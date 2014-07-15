@@ -15,7 +15,7 @@ public class Call {
     @Override
     public String toString() {
         String answered = mAnswered ? "answered" : "declined" ;
-        return "Call was" + answered + " and ring lasted " + mDuration;
+        return "Call was " + answered + " and ring lasted " + mDuration;
     }
 
     public static String toString(List<Call> calls) {
