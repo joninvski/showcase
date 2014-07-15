@@ -46,20 +46,7 @@ public class IntroFragment extends BaseFragment {
     private Button btStartService;
     private CounterService mCounterService;
 
-    private ServiceConnection mSvcConn = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG, "New service connection");
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
-            mCounterService = binder.getService();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            Log.d(TAG, "Service has crashed");
-        }
-    };
-
-
+    private ServiceConnection mSvcConn = startService(); 
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -67,6 +54,20 @@ public class IntroFragment extends BaseFragment {
 
     public IntroFragment() {
         // Required empty public constructor
+    }
+
+    public ServiceConnection startService() {
+        return new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                Log.d(TAG, "New service connection");
+                CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
+                mCounterService = binder.getService();
+            }
+
+            public void onServiceDisconnected(ComponentName className) {
+                Log.d(TAG, "Service has crashed");
+            }
+        };
     }
 
     @DebugLog
