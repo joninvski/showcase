@@ -37,6 +37,11 @@ import hugo.weaving.DebugLog;
 import javax.inject.Inject;
 import com.ubaza.domain.Call;
 import java.util.List;
+import retrofit.RestAdapter;
+import com.ubaza.rest.UbazaRestClient;
+import retrofit.Callback;
+import retrofit.client.Response;
+import retrofit.RetrofitError;
 
 public class IntroFragment extends BaseFragment {
 
@@ -44,9 +49,9 @@ public class IntroFragment extends BaseFragment {
 
     private TextView tvCallsReceived;
     private Button btStartService;
+    private Button btGetRingtones;
     private CounterService mCounterService;
-
-    private ServiceConnection mSvcConn = startService(); 
+    private ServiceConnection mSvcConn = startService();
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -68,6 +73,32 @@ public class IntroFragment extends BaseFragment {
                 Log.d(TAG, "Service has crashed");
             }
         };
+    }
+
+    public void restTest() {
+        // Create an instance of our AsynchronousApi interface.
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                    .setEndpoint(UbazaRestClient.API_URL)
+                    .build();
+        // Create an instance of our GitHub API interface.
+        UbazaRestClient.Ubaza ubaza = restAdapter.create(UbazaRestClient.Ubaza.class);
+        final Context mContext = getActivity();
+
+        Callback callback = new Callback() {
+            @Override
+            public void success(Object o, Response response) {
+                Toast.makeText(mContext, "SUCESS", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, response.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d(TAG, retrofitError.toString());
+                Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        ubaza.getRingtones(callback);
     }
 
     @DebugLog
@@ -102,9 +133,17 @@ public class IntroFragment extends BaseFragment {
         btStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // presenter.getDetails();
                 startCallListenerService();
                 Log.d(TAG, "Clicked start service view");
+            }
+        });
+
+        btGetRingtones = (Button) view.findViewById(R.id.get_ringtones);
+        btGetRingtones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restTest();
+                Log.d(TAG, "Clicked getRingtones");
             }
         });
     }
