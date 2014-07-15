@@ -41,6 +41,7 @@ public class App extends Application {
         if(mBus == null) mBus = new Bus();
     }
 
+
     /**
      * Used by Activities to create a scoped graph
      */

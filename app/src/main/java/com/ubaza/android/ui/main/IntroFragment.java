@@ -60,18 +60,11 @@ import butterknife.OnClick;
 import android.widget.ListAdapter;
 import com.etsy.android.grid.StaggeredGridView;
 import com.ubaza.android.ui.adapter.SampleAdapter;
+import java.util.Random;
 
 public class IntroFragment extends BaseFragment {
 
-    private CounterService mCounterService;
-    private ServiceConnection mSvcConn = startService();
     private UbazaRestClient ubazaRest;
-
-    /* Fragment views */
-    @InjectView(R.id.received_calls) TextView tvCallsReceived;
-    @InjectView(R.id.ringtones) TextView tvRingtones;
-    @InjectView(R.id.start_service) Button btStartService;
-    @InjectView(R.id.get_ringtones) Button btGetRingtones;
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -79,20 +72,6 @@ public class IntroFragment extends BaseFragment {
 
     public IntroFragment() {
         // Required empty public constructor
-    }
-
-    public ServiceConnection startService() {
-        return new ServiceConnection() {
-            public void onServiceConnected(ComponentName className, IBinder service) {
-                Timber.d("New service connection to:  %s \n", className);
-                CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
-                mCounterService = binder.getService();
-            }
-
-            public void onServiceDisconnected(ComponentName className) {
-                Timber.d("Service has crashed", className);
-            }
-        };
     }
 
     public void restTest() {
@@ -105,8 +84,6 @@ public class IntroFragment extends BaseFragment {
         StringBuilder sBuild = new StringBuilder();
         for( Ringtone ring : ringToneList )
             sBuild.append(ring.toString() + '\n');
-
-        tvRingtones.setText(sBuild.toString());
     }
 
     @DebugLog
@@ -131,13 +108,25 @@ public class IntroFragment extends BaseFragment {
         final View view = inflater.inflate(R.layout.fragment_intro, container, false);
         ubazaRest = new UbazaRestClient(getBus());
 
-        SampleAdapter mAdapter = new SampleAdapter(getActivity(), R.id.txt_line1);
-        mAdapter.add("ola");
-        mAdapter.add("adeus");
-        StaggeredGridView gridView = (StaggeredGridView) getActivity().findViewById(R.id.grid_view);
+        StaggeredGridView gridView = (StaggeredGridView) view.findViewById(R.id.grid_view);
+        SampleAdapter mAdapter = new SampleAdapter(getActivity(), R.layout.list_item_sample, generateSampleData());
         gridView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    public static ArrayList<Ringtone> generateSampleData() {
+        String repeat = " repeat";
+        final int SAMPLE_DATA_ITEM_COUNT = 10;
+        final ArrayList<Ringtone> datas = new ArrayList<Ringtone>();
+        for (int i = 0; i < SAMPLE_DATA_ITEM_COUNT; i++) {
+            Ringtone data = new Ringtone("CardA", "https://jiresal-test.s3.amazonaws.com/deal3.png");
+            Random ran = new Random();
+            int x = ran.nextInt(i + SAMPLE_DATA_ITEM_COUNT);
+            for (int j = 0; j < x; j++)
+            datas.add(data);
+        }
+        return datas;
     }
 
     @DebugLog
@@ -147,31 +136,10 @@ public class IntroFragment extends BaseFragment {
         ButterKnife.inject(this, view);
     }
 
-    @OnClick(R.id.start_service)
-    public void clickedStartServer() {
-        Timber.d("Clicked start service view");
-        startCallListenerService();
-    }
-
-    @OnClick(R.id.get_ringtones)
-    public void clickedGetRingtones() {
-        Timber.d("Clicked getRingtones");
-        restTest();
-    }
-
-    @DebugLog
-    public void startCallListenerService() {
-        Timber.d("Calling bindService()");
-        getActivity().bindService(CounterService.makeIntent(getActivity()),
-                mSvcConn,
-                Context.BIND_AUTO_CREATE);
-    }
-
     @DebugLog
     public void getCalls() {
-        if(mCounterService != null) {
-            List<Call> calls = mCounterService.getCalls();
-            tvCallsReceived.setText(Call.toString(calls));
+        if(getCounterService() != null) {
+            List<Call> calls = getCounterService().getCalls();
         }
     }
 
