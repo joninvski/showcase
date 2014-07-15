@@ -4,11 +4,14 @@ import android.app.Application;
 import android.content.Context;
 
 import dagger.ObjectGraph;
+import com.squareup.otto.Bus;
+import javax.inject.Inject;
 
 
 public class App extends Application {
     private ObjectGraph objectGraph;
 
+    public Bus mBus;
 
     public static App get(Context context) {
         return (App) context.getApplicationContext();
@@ -27,8 +30,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         buildObjectGraphAndInject();
+        if(mBus == null) mBus = new Bus();
     }
-
 
     /**
      * Used by Activities to create a scoped graph

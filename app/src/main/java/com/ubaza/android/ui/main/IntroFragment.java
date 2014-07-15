@@ -42,6 +42,9 @@ import com.ubaza.rest.UbazaRestClient;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.RetrofitError;
+import com.ubaza.domain.Ringtone;
+import com.squareup.otto.Subscribe;
+import java.util.ArrayList;
 
 public class IntroFragment extends BaseFragment {
 
@@ -76,35 +79,19 @@ public class IntroFragment extends BaseFragment {
     }
 
     public void restTest() {
-        // Create an instance of our AsynchronousApi interface.
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint(UbazaRestClient.API_URL)
-                    .build();
-        // Create an instance of our GitHub API interface.
-        UbazaRestClient.Ubaza ubaza = restAdapter.create(UbazaRestClient.Ubaza.class);
-        final Context mContext = getActivity();
+        UbazaRestClient ubaza = new UbazaRestClient(getBus());
+        ubaza.getRingtones();
+    }
 
-        Callback callback = new Callback() {
-            @Override
-            public void success(Object o, Response response) {
-                Toast.makeText(mContext, "SUCESS", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, response.toString());
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d(TAG, retrofitError.toString());
-                Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        ubaza.getRingtones(callback);
+    @Subscribe public void setRingtones(ArrayList<Ringtone> event) {
+        Toast.makeText(getActivity(), "Received Otto", Toast.LENGTH_SHORT).show();
     }
 
     @DebugLog
     @Override
     public void onResume() {
         super.onResume();
+        getBus().register(this);
         getCalls();
     }
 

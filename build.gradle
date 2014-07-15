@@ -7,8 +7,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:0.10.+'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+            // NOTE: Do not place your application dependencies here; they belong
+            // in the individual module build.gradle files
     }
 }
 
@@ -27,21 +27,22 @@ allprojects {
 
 subprojects {
     ext.versionfile = new File('CLASSPATH')
-        versionfile.text = ''
+    versionfile.text = ''
 
-        printDependencies {
-            afterEvaluate { Project project ->
-                if (configurations.find { it.name == 'compile' }) {
-                    doLast {
-                        println "$project.configurations.compile.asPath\n"
-                            versionfile.text += "$project.configurations.compile.asPath"
-                    }
-                }
-                if (configurations.find { it.name == 'androidTestCompile' }) {
-                    doLast {
-                        println "$project.configurations.androidTestCompile.asPath\n"
-                            versionfile.text += "$project.configurations.androidTestCompile.asPath"
-                    }
+    printDependencies {
+        afterEvaluate { Project project ->
+            if (configurations.find { it.name == 'compile' }) {
+                doLast {
+                    println "$project.configurations.compile.asPath\n"
+                        versionfile.text += "$project.configurations.compile.asPath"
                 }
             }
-        }}
+            if (configurations.find { it.name == 'androidTestCompile' }) {
+                doLast {
+                    println "$project.configurations.androidTestCompile.asPath\n"
+                        versionfile.text += "$project.configurations.androidTestCompile.asPath"
+                }
+            }
+        }
+    }
+}
