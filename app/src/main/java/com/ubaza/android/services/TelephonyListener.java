@@ -7,6 +7,7 @@ import android.content.Context;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import android.content.Intent;
+import com.ubaza.domain.Call;
 
 public class TelephonyListener extends PhoneStateListener
 {
@@ -57,17 +58,19 @@ public class TelephonyListener extends PhoneStateListener
     }
 
     public void recordCall(STATE newState, DateTime startRingTime) {
-            DateTime currTime = new DateTime();
+        DateTime currTime = new DateTime();
 
-            /* Check if the phone was ringing and user answered the call */
-            if(mCurrentState == STATE.CALLING && newState == STATE.ANSWERED) {
-                int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
-                mService.calls = mService.calls + ("Answered after: " + Integer.toString(seconds) + "\n");
-            }
+        /* Check if the phone was ringing and user answered the call */
+        if(mCurrentState == STATE.CALLING && newState == STATE.ANSWERED) {
+            int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
+            boolean answered = true;
+            mService.addCall(new Call(seconds, answered));
+        }
 
-            if(mCurrentState == STATE.CALLING && newState == STATE.STANDBY) {
-                int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
-                mService.calls = mService.calls + ("Declined after: " + Integer.toString(seconds) + "\n");
-            }
+        if(mCurrentState == STATE.CALLING && newState == STATE.STANDBY) {
+            int seconds = Seconds.secondsBetween(startRingTime, currTime).getSeconds();
+            boolean answered = false;
+            mService.addCall(new Call(seconds, answered));
+        }
     }
 }

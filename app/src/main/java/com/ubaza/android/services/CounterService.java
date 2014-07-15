@@ -13,27 +13,39 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.telephony.PhoneStateListener;
 import android.os.Binder;
+import java.util.List;
+import com.ubaza.domain.Call;
+import java.util.ArrayList;
 
 public class CounterService extends Service {
 
-    private final String TAG = getClass().getName();
-    public String calls = "";
+    private List<Call> mCallList;
+    private final IBinder mBinder = new LocalBinder();
 
     /**
-     * A Messenger that encapsulates the RequestHandler used to handle
-     * request Messages sent from the activity.
+     * Class used for the client Binder.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with IPC.
      */
-    private Messenger mReqMessenger = null;
+    public class LocalBinder extends Binder {
+        public CounterService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return CounterService.this;
+        }
+    }
+
+    /**
+     * Adds a received call to the list of received calls
+     */
+    public void addCall(Call call) {
+        mCallList.add(call);
+    }
 
     /**
      * Hook method called when the Service is created.
      */
     @Override
     public void onCreate() {
-        // A Messenger that encapsulates the RequestHandler used to
-        // handle request Messages sent from the activity.
-        mReqMessenger = new Messenger(new RequestHandler());
-
+        mCallList = new ArrayList<Call>();
         startTelephonyListener();
         Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
     }
@@ -46,48 +58,17 @@ public class CounterService extends Service {
         return new Intent(context, CounterService.class);
     }
 
+    /**
+     * Starts the class that will listen to the telephony changes
+     * (when calls occur)
+     */
     private void startTelephonyListener() {
-
         TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         mTelephonyMgr.listen(new TelephonyListener(this, getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-
-    private class RequestHandler extends Handler {
-        /**
-         * Return a Message containing an ID that's unique
-         * system-wide.
-         */
-        private Message getCalls() {
-            Message reply = Message.obtain();
-            Bundle data = new Bundle();
-            data.putString("ID", calls);
-            reply.setData(data);
-            return reply;
-        }
-
-        // Hook method called back when a request Message arrives from the UniqueIDGeneratorActivity.  
-        // The message it receives contains the Messenger used to reply to the Activity.
-        public void handleMessage(Message request) {
-
-            // Store the reply Messenger so it doesn't change out from underneath us.
-            final Messenger replyMessenger = request.replyTo;
-
-            // Put a runnable that generates a unique ID into the
-            // thread pool for subsequent concurrent processing.
-            Message reply = getCalls();
-
-            try {
-                // Send the reply back to the activity
-                replyMessenger.send(reply);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static String callID(Message replyMessage) {
-        return replyMessage.getData().getString("ID");
+    public List<Call> getCalls() {
+        return mCallList;
     }
 
     /**
@@ -106,7 +87,6 @@ public class CounterService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        Toast.makeText(this, "onBind", Toast.LENGTH_LONG).show();
-        return mReqMessenger.getBinder();
+        return mBinder;
     }
 }

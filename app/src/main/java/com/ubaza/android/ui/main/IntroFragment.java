@@ -35,6 +35,8 @@ import com.ubaza.android.ui.common.BaseFragment;
 import hugo.weaving.DebugLog;
 
 import javax.inject.Inject;
+import com.ubaza.domain.Call;
+import java.util.List;
 
 public class IntroFragment extends BaseFragment {
 
@@ -43,21 +45,8 @@ public class IntroFragment extends BaseFragment {
     private TextView mCallsReceived;
     private Button startService;
     private Messenger mReqMessengerRef = null;
-    private CounterService mBoundService;
+    private CounterService mCounterService;
 
-
-    class ReplyHandler extends Handler {
-        /**
-         * Callback to handle the reply from the service
-         */
-        public void handleMessage(Message reply) {
-            // Get the unique ID encapsulated in reply Message.
-            String callID = CounterService.callID(reply);
-
-            // Display the unique ID.
-            mCallsReceived.setText(callID + "\n");
-        }
-    }
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -107,15 +96,15 @@ public class IntroFragment extends BaseFragment {
     }
 
     private ServiceConnection mSvcConn = new ServiceConnection() {
-
-        public void onServiceConnected(ComponentName className, IBinder binder) {
+        public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG, "New service connection");
-            mReqMessengerRef = new Messenger(binder);
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            CounterService.LocalBinder binder = (CounterService.LocalBinder) service;
+            mCounterService = binder.getService();
         }
 
         public void onServiceDisconnected(ComponentName className) {
             Log.d(TAG, "Service has crashed");
-            mReqMessengerRef = null;
         }
     };
 
@@ -134,19 +123,9 @@ public class IntroFragment extends BaseFragment {
      * ID" button to request a new unique ID from the activity
      */
     public void getCalls() {
-        // Create a request Message that indicates the Service should
-        // send the reply back to ReplyHandler encapsulated by the
-        // Messenger.
-        Message request = Message.obtain();
-        request.replyTo = new Messenger(new ReplyHandler());
-
-        try {
-            if (mReqMessengerRef != null) {
-                Log.d(TAG, "sending message");
-                mReqMessengerRef.send(request);
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if(mCounterService != null) {
+            List<Call> calls = mCounterService.getCalls();
+            mCallsReceived.setText(Call.toString(calls));
         }
     }
 
