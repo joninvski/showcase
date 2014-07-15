@@ -5,18 +5,19 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
     }
 }
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
+apply plugin: 'hugo'
 
 android {
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.ubaza.android"
         minSdkVersion 14
         targetSdkVersion 20
         versionCode 1
@@ -35,5 +36,6 @@ dependencies {
     compile 'com.squareup.dagger:dagger-compiler:1.0.1'
     compile 'com.squareup.dagger:dagger:1.0.1'
     compile 'joda-time:joda-time:2.3'
+    compile 'com.jakewharton.hugo:hugo-runtime:1.1.0'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.+'
 }

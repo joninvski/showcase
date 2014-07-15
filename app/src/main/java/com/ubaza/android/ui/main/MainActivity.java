@@ -16,8 +16,8 @@ import android.widget.Toast;
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
 import com.ubaza.android.ui.common.BaseActivity;
-import com.ubaza.android.ui.main.presenters.MainPresenterImpl;
-import com.ubaza.android.ui.main.views.MainView;
+
+import hugo.weaving.DebugLog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,12 +25,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity implements MainView {
+
+public class MainActivity extends BaseActivity {
     private final static String TAG = "MAINACTIVITY";
 
-    @Inject
-    MainPresenterImpl presenter;
-
+    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +41,7 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
 
+    @DebugLog
     @Override
     protected List<Object> getModules() {
         return Arrays.<Object>asList(new MainModule(this));
@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity implements MainView {
      * visible.
      */
     @Override
+    @DebugLog
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
