@@ -28,33 +28,42 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
 import com.ubaza.android.ui.common.BaseFragment;
+import com.ubaza.domain.Call;
+import com.ubaza.domain.Ringtone;
+import com.ubaza.rest.UbazaRestClient;
 
 import hugo.weaving.DebugLog;
 
-import javax.inject.Inject;
-import com.ubaza.domain.Call;
-import java.util.List;
-import retrofit.RestAdapter;
-import com.ubaza.rest.UbazaRestClient;
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.RetrofitError;
-import com.ubaza.domain.Ringtone;
-import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import retrofit.Callback;
+
+import retrofit.client.Response;
+
+import retrofit.RestAdapter;
+
+import retrofit.RetrofitError;
+import java.lang.StringBuilder;
 
 public class IntroFragment extends BaseFragment {
 
     private static final String TAG = "IntroFragment";
 
     private TextView tvCallsReceived;
+    private TextView tvRingtones;
     private Button btStartService;
     private Button btGetRingtones;
     private CounterService mCounterService;
     private ServiceConnection mSvcConn = startService();
+    private UbazaRestClient ubazaRest;
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
@@ -79,12 +88,17 @@ public class IntroFragment extends BaseFragment {
     }
 
     public void restTest() {
-        UbazaRestClient ubaza = new UbazaRestClient(getBus());
-        ubaza.getRingtones();
+        ubazaRest.getRingtones();
     }
 
-    @Subscribe public void setRingtones(ArrayList<Ringtone> event) {
+    @Subscribe 
+    public void setRingtones(ArrayList<Ringtone> ringToneList) {
         Toast.makeText(getActivity(), "Received Otto", Toast.LENGTH_SHORT).show();
+        StringBuilder sBuild = new StringBuilder();
+        for( Ringtone ring : ringToneList )
+            sBuild.append(ring.toString() + '\n');
+
+        tvRingtones.setText(sBuild.toString());
     }
 
     @DebugLog
@@ -98,6 +112,7 @@ public class IntroFragment extends BaseFragment {
     @DebugLog
     @Override
     public void onPause() {
+        getBus().unregister(this);
         super.onPause();
     }
 
@@ -106,7 +121,10 @@ public class IntroFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_intro, container, false);
-        tvCallsReceived = (TextView) view.findViewById(R.id.received_ringtones);
+        tvCallsReceived = (TextView) view.findViewById(R.id.received_calls);
+        tvRingtones = (TextView) view.findViewById(R.id.ringtones);
+        ubazaRest = new UbazaRestClient(getBus());
+
         return view;
     }
 
