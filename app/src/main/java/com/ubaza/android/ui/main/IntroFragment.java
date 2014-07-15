@@ -57,6 +57,9 @@ import retrofit.RetrofitError;
 import timber.log.Timber;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import android.widget.ListAdapter;
+import com.etsy.android.grid.StaggeredGridView;
+import com.ubaza.android.ui.adapter.SampleAdapter;
 
 public class IntroFragment extends BaseFragment {
 
@@ -127,6 +130,12 @@ public class IntroFragment extends BaseFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_intro, container, false);
         ubazaRest = new UbazaRestClient(getBus());
+
+        SampleAdapter mAdapter = new SampleAdapter(getActivity(), R.id.txt_line1);
+        mAdapter.add("ola");
+        mAdapter.add("adeus");
+        StaggeredGridView gridView = (StaggeredGridView) getActivity().findViewById(R.id.grid_view);
+        gridView.setAdapter(mAdapter);
 
         return view;
     }
