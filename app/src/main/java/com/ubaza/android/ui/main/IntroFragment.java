@@ -2,36 +2,35 @@ package com.ubaza.android.ui.main;
 
 
 import android.app.Activity;
-
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.squareup.otto.Subscribe;
-
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
+import com.ubaza.android.ui.adapter.SampleAdapter;
 import com.ubaza.android.ui.common.BaseFragment;
 import com.ubaza.domain.Call;
 import com.ubaza.domain.Ringtone;
@@ -40,27 +39,16 @@ import com.ubaza.rest.UbazaRestClient;
 import hugo.weaving.DebugLog;
 
 import java.lang.StringBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
+import java.util.Random;
 
 import retrofit.Callback;
-
 import retrofit.client.Response;
-
 import retrofit.RestAdapter;
-
 import retrofit.RetrofitError;
 
 import timber.log.Timber;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import android.widget.ListAdapter;
-import com.etsy.android.grid.StaggeredGridView;
-import com.ubaza.android.ui.adapter.SampleAdapter;
-import java.util.Random;
 
 public class IntroFragment extends BaseFragment {
 

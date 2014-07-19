@@ -7,7 +7,6 @@ import com.ubaza.android.App;
 
 import java.util.List;
 
-import dagger.ObjectGraph;
 import timber.log.Timber;
 import com.ubaza.android.services.CounterService;
 import hugo.weaving.DebugLog;
@@ -18,7 +17,6 @@ import android.os.IBinder;
 
 
 public abstract class BaseActivity extends Activity {
-    private ObjectGraph activityGraph;
 
     private ServiceConnection mSvcConn = prepareServiceConnection();
     private CounterService mCounterService;
@@ -41,9 +39,6 @@ public abstract class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activityGraph = ((App) getApplication()).createScopedGraph(getModules().toArray());
-        activityGraph.inject(this);
-
         startCallListenerService();
     }
 
@@ -57,18 +52,10 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        activityGraph = null;
         unbindService(mSvcConn);
     }
 
     public CounterService getCounterService() {
         return mCounterService;
-    }
-
-
-    protected abstract List<Object> getModules();
-
-    public void inject(Object object) {
-        activityGraph.inject(object);
     }
 }

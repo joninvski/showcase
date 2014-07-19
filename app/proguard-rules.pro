@@ -27,5 +27,3 @@
     @com.squareup.otto.Subscribe public *;
     @com.squareup.otto.Produce public *;
 }
-
--dontwarn dagger.internal.**
