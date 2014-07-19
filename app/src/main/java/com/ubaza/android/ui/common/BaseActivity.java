@@ -14,6 +14,10 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.content.ComponentName;
 import android.os.IBinder;
+import android.app.Notification;
+import android.content.Intent;
+import android.app.PendingIntent;
+import com.ubaza.android.R;
 
 
 public abstract class BaseActivity extends Activity {
@@ -48,6 +52,8 @@ public abstract class BaseActivity extends Activity {
         bindService(CounterService.makeIntent(this), mSvcConn, Context.BIND_AUTO_CREATE);
         startService(CounterService.makeIntent(this));
     }
+
+
 
     @Override
     protected void onDestroy() {

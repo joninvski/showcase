@@ -4,5 +4,7 @@
     <string name="app_name">Ubaza Client App</string>
     <string name="start_service">Start the service</string>
     <string name="get_ringtones">Get Ringtones</string>
+    <string name="service_notification_title">Ubaza service is running</string>
+    <string name="service_notification_desc">Just receive calls and win money</string>
 
 </resources>
