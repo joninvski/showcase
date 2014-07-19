@@ -1,5 +1,4 @@
-package com.ubaza.android.ui.main;
-
+package com.ubaza.android.ui.fragments;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -50,15 +49,15 @@ import retrofit.RetrofitError;
 
 import timber.log.Timber;
 
-public class IntroFragment extends BaseFragment {
+public class MainFragment extends BaseFragment {
 
     private UbazaRestClient ubazaRest;
 
-    public static IntroFragment newInstance() {
-        return new IntroFragment();
+    public static MainFragment newInstance() {
+        return new MainFragment();
     }
 
-    public IntroFragment() {
+    public MainFragment () {
         // Required empty public constructor
     }
 

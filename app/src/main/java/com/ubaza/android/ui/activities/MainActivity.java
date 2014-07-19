@@ -1,4 +1,4 @@
-package com.ubaza.android.ui.main;
+package com.ubaza.android.ui.activities;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
 import com.ubaza.android.ui.common.BaseActivity;
+import com.ubaza.android.ui.fragments.MainFragment;
 
 import hugo.weaving.DebugLog;
 
@@ -26,7 +27,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, IntroFragment.newInstance()).commit();
+                .replace(R.id.fragment_container, MainFragment.newInstance()).commit();
     }
 
     /**
