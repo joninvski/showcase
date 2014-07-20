@@ -1,14 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
-
-            // NOTE: Do not place your application dependencies here; they belong
-            // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 
@@ -18,6 +14,7 @@ allprojects {
     }
 }
 
+// TODO - Remove this to differente file
 allprojects {
     tasks.withType(Compile) {
         options.compilerArgs << "-Xlint:deprecation"
@@ -34,13 +31,13 @@ subprojects {
             if (configurations.find { it.name == 'compile' }) {
                 doLast {
                     println "$project.configurations.compile.asPath\n"
-                        versionfile.text += "$project.configurations.compile.asPath"
+                    versionfile.text += "$project.configurations.compile.asPath"
                 }
             }
             if (configurations.find { it.name == 'androidTestCompile' }) {
                 doLast {
                     println "$project.configurations.androidTestCompile.asPath\n"
-                        versionfile.text += "$project.configurations.androidTestCompile.asPath"
+                    versionfile.text += "$project.configurations.androidTestCompile.asPath"
                 }
             }
         }

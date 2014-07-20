@@ -40,9 +40,10 @@ public class UbazaRestClient {
         String id;
         String name;
         String uri;
+        int price;
 
         private Ringtone toDomain() {
-            return new Ringtone(name, uri);
+            return new Ringtone(name, uri, price);
         }
     }
 

@@ -66,74 +66,77 @@ public class MainFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void setRingtones(ArrayList<Ringtone> ringToneList) {
-        Timber.d("Setting the ringtones in the view (called by otto)");
+    public void setRingtones( ArrayList<Ringtone> ringToneList ) {
+        Timber.d( "Setting the ringtones in the view (called by otto)" );
         StringBuilder sBuild = new StringBuilder();
         for( Ringtone ring : ringToneList )
-            sBuild.append(ring.toString() + '\n');
+            sBuild.append( ring.toString() + '\n' );
     }
 
     @DebugLog
     @Override
     public void onResume() {
         super.onResume();
-        getBus().register(this);
+        getBus().register( this );
         getCalls();
     }
 
     @DebugLog
     @Override
     public void onPause() {
-        getBus().unregister(this);
+        getBus().unregister( this );
         super.onPause();
     }
 
     @DebugLog
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_intro, container, false);
-        ubazaRest = new UbazaRestClient(getBus());
+        final View view = inflater.inflate( R.layout.fragment_intro, container, false );
+        ubazaRest = new UbazaRestClient( getBus() );
 
-        StaggeredGridView gridView = (StaggeredGridView) view.findViewById(R.id.grid_view);
-        SampleAdapter mAdapter = new SampleAdapter(getActivity(), R.layout.list_item_sample, generateSampleData());
-        gridView.setAdapter(mAdapter);
+        StaggeredGridView gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
+        SampleAdapter mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, generateSampleData() );
+        gridView.setAdapter( mAdapter );
 
         return view;
     }
 
     public static ArrayList<Ringtone> generateSampleData() {
         String repeat = " repeat";
-        final int SAMPLE_DATA_ITEM_COUNT = 10;
+        final int SAMPLE_DATA_ITEM_COUNT = 5;
         final ArrayList<Ringtone> datas = new ArrayList<Ringtone>();
-        for (int i = 0; i < SAMPLE_DATA_ITEM_COUNT; i++) {
-            Ringtone data = new Ringtone("CardA", "https://jiresal-test.s3.amazonaws.com/deal3.png");
-            Random ran = new Random();
-            int x = ran.nextInt(i + SAMPLE_DATA_ITEM_COUNT);
-            for (int j = 0; j < x; j++)
-            datas.add(data);
+        Random ran = new Random( 1 );
+        for ( int i = 0; i < SAMPLE_DATA_ITEM_COUNT; i++ ) {
+
+            int[] images = { R.drawable.doge, R.drawable.doge2, R.drawable.doge3, R.drawable.doge4 };
+            String nextImage = Integer.toString( images[ran.nextInt( images.length )] );
+
+            Ringtone data = new Ringtone( "CardA", nextImage, ran.nextInt(100));
+            int x = ran.nextInt( i + SAMPLE_DATA_ITEM_COUNT );
+            datas.add( data );
         }
         return datas;
     }
 
     @DebugLog
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+    public void onViewCreated( View view, Bundle savedInstanceState ) {
+        super.onViewCreated( view, savedInstanceState );
+        ButterKnife.inject( this, view );
     }
 
     @DebugLog
     public void getCalls() {
-        if(getCounterService() != null) {
+        if( getCounterService() != null ) {
             List<Call> calls = getCounterService().getCalls();
-            Timber.d("%s", Call.toString(calls));
+            Timber.d( "%s", Call.toString( calls ) );
         }
     }
 
     @Override
     @DebugLog
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach( Activity activity ) {
+        super.onAttach( activity );
     }
 }
