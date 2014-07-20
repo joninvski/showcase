@@ -21,7 +21,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -123,7 +122,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onViewCreated( View view, Bundle savedInstanceState ) {
         super.onViewCreated( view, savedInstanceState );
-        ButterKnife.inject( this, view );
     }
 
     @DebugLog

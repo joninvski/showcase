@@ -18,6 +18,8 @@ import android.app.Notification;
 import android.content.Intent;
 import android.app.PendingIntent;
 import com.ubaza.android.R;
+import butterknife.ButterKnife;
+import android.view.View;
 
 
 public abstract class BaseActivity extends Activity {

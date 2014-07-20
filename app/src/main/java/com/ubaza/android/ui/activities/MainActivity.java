@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Messenger;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import butterknife.InjectView;
 
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
@@ -17,21 +20,52 @@ import hugo.weaving.DebugLog;
 
 import java.util.Arrays;
 import java.util.List;
+import android.widget.ArrayAdapter;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import butterknife.OnItemClick;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity {
 
+    @InjectView( R.id.left_drawer ) ListView mDrawerList;
+    @InjectView( R.id.drawer_layout ) DrawerLayout mDrawer;
+
     @DebugLog
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
+
+        ButterKnife.inject(this);
+        String[] data = {"one", "two"};
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled( true );
+        getActionBar().setHomeButtonEnabled( true );
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data );
+
+        mDrawerList.setAdapter( adapter );
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, MainFragment.newInstance()).commit();
+        .replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+    }
+
+    @DebugLog
+    @OnItemClick(R.id.left_drawer)
+    protected void onLeftMenuItemClick(final int pos) {
+        mDrawer.setDrawerListener( new DrawerLayout.SimpleDrawerListener(){
+            @Override
+            public void onDrawerClosed(View drawerView){
+                super.onDrawerClosed(drawerView);
+                Timber.d("Selected pos %d", pos);
+                getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+            }
+        });
+        mDrawer.closeDrawer(mDrawerList);
     }
 
     /**
