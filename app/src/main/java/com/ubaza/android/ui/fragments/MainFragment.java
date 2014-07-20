@@ -104,7 +104,7 @@ public class MainFragment extends BaseFragment {
 
     public static ArrayList<Ringtone> generateSampleData() {
         String repeat = " repeat";
-        final int SAMPLE_DATA_ITEM_COUNT = 5;
+        final int SAMPLE_DATA_ITEM_COUNT = 10;
         final ArrayList<Ringtone> datas = new ArrayList<Ringtone>();
         Random ran = new Random( 1 );
         for ( int i = 0; i < SAMPLE_DATA_ITEM_COUNT; i++ ) {

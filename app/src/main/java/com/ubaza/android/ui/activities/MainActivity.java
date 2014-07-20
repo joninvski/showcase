@@ -26,6 +26,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, MainFragment.newInstance()).commit();
     }

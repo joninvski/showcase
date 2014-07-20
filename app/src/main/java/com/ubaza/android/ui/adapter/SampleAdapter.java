@@ -25,7 +25,11 @@ import java.util.Random;
 
 import timber.log.Timber;
 
+
 public class SampleAdapter extends ArrayAdapter<Ringtone> {
+
+    private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
+
     Activity activity;
     int resource;
     List<Ringtone> datas;
@@ -63,15 +67,33 @@ public class SampleAdapter extends ArrayAdapter<Ringtone> {
             holder = ( DealHolder ) row.getTag();
         }
 
-
         final Ringtone data = datas.get( position );
 
         holder.image.setImageResource( Integer.parseInt( data.getUri() ) );
-        holder.image.setHeightRatio( 0.5 );
+        double positionHeight = getPositionRatio(position);
+
+        holder.image.setHeightRatio( positionHeight );
 
         holder.title.setText( data.getName() );
         holder.description.setText( data.getPriceString() );
 
         return row;
+    }
+
+  private double getPositionRatio(final int position) {
+        double ratio = sPositionHeightRatios.get(position, 0.0);
+        // if not yet done generate and stash the columns height
+        // in our real world scenario this will be determined by
+        // some match based on the known height and width of the image
+        // and maybe a helpful way to get the column height!
+        if (ratio == 0) {
+            ratio = getRandomHeightRatio();
+            sPositionHeightRatios.append(position, ratio);
+        }
+        return ratio;
+    }
+
+    private double getRandomHeightRatio() {
+        return (new Random().nextDouble() / 2.0) + 1.0; // height will be 1.0 - 1.5 the width
     }
 }
