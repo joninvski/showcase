@@ -76,8 +76,8 @@ public class MainFragment extends BaseFragment {
 
         ringtones.addAll(ringToneList);
 
+        Timber.d( "##!!!! HERE %s", sBuild.toString() );
         mAdapter.notifyDataSetChanged();
-        Timber.d( "%s", sBuild.toString() );
     }
 
     @DebugLog
@@ -86,7 +86,6 @@ public class MainFragment extends BaseFragment {
         super.onResume();
         getBus().register( this );
         getRingTonesAssynchronasly();
-
         getCalls();
     }
 

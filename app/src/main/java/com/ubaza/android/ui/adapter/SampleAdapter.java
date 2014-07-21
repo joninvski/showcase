@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 import timber.log.Timber;
+import com.squareup.picasso.Picasso;
 
 
 public class SampleAdapter extends ArrayAdapter<Ringtone> {
@@ -69,7 +70,9 @@ public class SampleAdapter extends ArrayAdapter<Ringtone> {
 
         final Ringtone data = datas.get( position );
 
-        holder.image.setImageResource( Integer.parseInt( data.getUri() ) );
+        // holder.image.setImageResource( Integer.parseInt( data.getUri() ) );
+        Picasso.with(activity).load(data.getUri()).into(holder.image);
+
         double positionHeight = getPositionRatio(position);
 
         holder.image.setHeightRatio( positionHeight );

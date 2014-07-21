@@ -16,6 +16,7 @@ import retrofit.http.GET;
 import retrofit.RestAdapter;
 
 import retrofit.RetrofitError;
+import timber.log.Timber;
 
 public class UbazaRestClient {
 
@@ -61,12 +62,14 @@ public class UbazaRestClient {
                 for(RingtoneREST rest : list)
                     retList.add(rest.toDomain());
 
+                Timber.d("Posting %d ringtones to otto", list.size());
                 mBus.post(retList);
             }
 
             @Override
             public void failure(RetrofitError retrofitError) {
-
+                Timber.e("Failed %s", retrofitError.getUrl());
+                mBus.post(retrofitError);
             }
         };
 

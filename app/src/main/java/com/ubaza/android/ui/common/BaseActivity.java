@@ -23,6 +23,9 @@ import hugo.weaving.DebugLog;
 import java.util.List;
 
 import timber.log.Timber;
+import com.squareup.otto.Subscribe;
+import android.widget.Toast;
+import retrofit.RetrofitError;
 
 public abstract class BaseActivity extends Activity {
 
@@ -49,7 +52,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getBus().register(this);
         startCallListenerService();
     }
 
@@ -74,6 +77,11 @@ public abstract class BaseActivity extends Activity {
      */
     protected CounterService getCounterService() {
         return mCounterService;
+    }
+
+    @Subscribe
+    public void onNetworkError(RetrofitError error) {
+        Toast.makeText(this, "Could not connect to server", Toast.LENGTH_SHORT).show();
     }
 
 
