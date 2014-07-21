@@ -27,6 +27,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import butterknife.OnItemClick;
 import timber.log.Timber;
+import com.ubaza.android.ui.fragments.AlternativeFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        ButterKnife.inject(this);
+        ButterKnife.inject( this );
         String[] data = {"one", "two"};
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -55,17 +56,21 @@ public class MainActivity extends BaseActivity {
     }
 
     @DebugLog
-    @OnItemClick(R.id.left_drawer)
-    protected void onLeftMenuItemClick(final int pos) {
-        mDrawer.setDrawerListener( new DrawerLayout.SimpleDrawerListener(){
+    @OnItemClick( R.id.left_drawer )
+    protected void onLeftMenuItemClick( final int pos ) {
+        mDrawer.setDrawerListener( new DrawerLayout.SimpleDrawerListener() {
             @Override
-            public void onDrawerClosed(View drawerView){
-                super.onDrawerClosed(drawerView);
-                Timber.d("Selected pos %d", pos);
-                getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+            public void onDrawerClosed( View drawerView ) {
+                super.onDrawerClosed( drawerView );
+                Timber.d( "Selected pos %d", pos );
+                if( pos == 0 ) {
+                    getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+                } else {
+                    getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
+                }
             }
-        });
-        mDrawer.closeDrawer(mDrawerList);
+        } );
+        mDrawer.closeDrawer( mDrawerList );
     }
 
     /**

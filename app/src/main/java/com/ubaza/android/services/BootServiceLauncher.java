@@ -6,8 +6,8 @@ import android.content.Context;
 
 public class BootServiceLauncher extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Intent startServiceIntent = new Intent(context, CounterService.class);
-        context.startService(startServiceIntent);
+    public void onReceive( Context context, Intent intent ) {
+        Intent startServiceIntent = new Intent( context, CounterService.class );
+        context.startService( startServiceIntent );
     }
 }

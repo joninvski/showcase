@@ -91,7 +91,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate( R.layout.fragment_intro, container, false );
+        final View view = inflater.inflate( R.layout.fragment_main, container, false );
         ubazaRest = new UbazaRestClient( getBus() );
 
         StaggeredGridView gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
