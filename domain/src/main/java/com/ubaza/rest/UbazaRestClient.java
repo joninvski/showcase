@@ -19,7 +19,7 @@ import retrofit.RetrofitError;
 
 public class UbazaRestClient {
 
-    public static final String API_URL = "http://192.168.2.156:9000";
+    public static final String API_URL = "http://stark-savannah-4631.herokuapp.com/";
     public static final String TAG = "UbazaRestClient";
     private final Bus mBus;
     final RestAdapter restAdapter;

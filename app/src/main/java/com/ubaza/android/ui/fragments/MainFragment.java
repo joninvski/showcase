@@ -51,6 +51,8 @@ import timber.log.Timber;
 public class MainFragment extends BaseFragment {
 
     private UbazaRestClient ubazaRest;
+    private List<Ringtone> ringtones = new ArrayList<Ringtone>();
+    SampleAdapter mAdapter;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -60,7 +62,7 @@ public class MainFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public void restTest() {
+    public void getRingTonesAssynchronasly() {
         ubazaRest.getRingtones();
     }
 
@@ -68,8 +70,14 @@ public class MainFragment extends BaseFragment {
     public void setRingtones( ArrayList<Ringtone> ringToneList ) {
         Timber.d( "Setting the ringtones in the view (called by otto)" );
         StringBuilder sBuild = new StringBuilder();
-        for( Ringtone ring : ringToneList )
+        for( Ringtone ring : ringToneList ) {
             sBuild.append( ring.toString() + '\n' );
+        }
+
+        ringtones.addAll(ringToneList);
+
+        mAdapter.notifyDataSetChanged();
+        Timber.d( "%s", sBuild.toString() );
     }
 
     @DebugLog
@@ -77,6 +85,8 @@ public class MainFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getBus().register( this );
+        getRingTonesAssynchronasly();
+
         getCalls();
     }
 
@@ -95,7 +105,8 @@ public class MainFragment extends BaseFragment {
         ubazaRest = new UbazaRestClient( getBus() );
 
         StaggeredGridView gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
-        SampleAdapter mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, generateSampleData() );
+        // SampleAdapter mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, generateSampleData() );
+        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, ringtones);
         gridView.setAdapter( mAdapter );
 
         return view;
@@ -111,7 +122,7 @@ public class MainFragment extends BaseFragment {
             int[] images = { R.drawable.doge, R.drawable.doge2, R.drawable.doge3, R.drawable.doge4 };
             String nextImage = Integer.toString( images[ran.nextInt( images.length )] );
 
-            Ringtone data = new Ringtone( "CardA", nextImage, ran.nextInt(100));
+            Ringtone data = new Ringtone( "CardA", nextImage, ran.nextInt( 100 ) );
             int x = ran.nextInt( i + SAMPLE_DATA_ITEM_COUNT );
             datas.add( data );
         }

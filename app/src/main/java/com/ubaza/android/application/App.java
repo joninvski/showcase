@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 public class App extends Application {
     // The publish subscribe bus
-    public Bus mBus;
+    private Bus mBus;
 
     @Override
     public void onTerminate() {
@@ -33,5 +33,13 @@ public class App extends Application {
 
         // Construct otto bus
         if( mBus == null ) mBus = new Bus();
+    }
+
+
+    /**
+     * @brief Returns the communication bus
+     */
+    public Bus getBus() {
+        return mBus;
     }
 }

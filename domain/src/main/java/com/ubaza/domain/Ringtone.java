@@ -24,7 +24,7 @@ public class Ringtone {
     }
 
     public String toString() {
-        return mName + " -> " + mUri;
+        return mName + " -> " + mUri  + " " + getPriceString();
     }
 
     public int getPrice()
