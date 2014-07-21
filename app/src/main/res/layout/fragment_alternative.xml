@@ -1,0 +1,42 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <it.gmariotti.cardslib.library.view.CardView
+            android:id="@+id/carddemo_example_card_expand1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            card:card_layout_resourceID="@layout/card_thumbnail_layout"
+            android:layout_marginTop="12dp"/>
+
+        <it.gmariotti.cardslib.library.view.CardView
+            android:id="@+id/carddemo_example_card_expand2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            card:card_layout_resourceID="@layout/card_thumbnail_layout"
+            android:layout_marginTop="12dp"/>
+
+        <it.gmariotti.cardslib.library.view.CardView
+            android:id="@+id/carddemo_example_card_expand3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            card:card_layout_resourceID="@layout/card_thumbnail_layout"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
+
