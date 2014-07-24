@@ -17,10 +17,13 @@ import retrofit.RestAdapter;
 
 import retrofit.RetrofitError;
 import timber.log.Timber;
+import retrofit.http.POST;
+import com.ubaza.domain.Call;
 
 public class UbazaRestClient {
 
-    public static final String API_URL = "http://stark-savannah-4631.herokuapp.com/";
+    // public static final String API_URL = "http://stark-savannah-4631.herokuapp.com/";
+    public static final String API_URL = "http://citysdk.tagus.ist.utl.pt:9000/";
     public static final String TAG = "UbazaRestClient";
     private final Bus mBus;
     final RestAdapter restAdapter;
@@ -51,9 +54,13 @@ public class UbazaRestClient {
     public interface Ubaza {
         @GET("/v1/ringtones")
         void getRingtones(Callback<ArrayList<RingtoneREST>> callback);
+
+        @POST("/v1/event/add")
+        void insertEvent(String type);
     }
 
     public void getRingtones( ){
+        Timber.d("Getting ringtones");
 
         Callback<ArrayList<RingtoneREST>> callback = new Callback<ArrayList<RingtoneREST>>() {
             @Override
@@ -74,5 +81,12 @@ public class UbazaRestClient {
         };
 
         ubaza.getRingtones(callback);
+    }
+
+
+    public void pushCall( Call call ){
+        Timber.d("Pushing a call to the server");
+
+        ubaza.insertEvent(call.toString());
     }
 }

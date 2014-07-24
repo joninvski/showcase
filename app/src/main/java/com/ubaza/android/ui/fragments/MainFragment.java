@@ -47,12 +47,14 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
 import timber.log.Timber;
+import android.support.v4.widget.SwipeRefreshLayout;
 
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private UbazaRestClient ubazaRest;
     private List<Ringtone> ringtones = new ArrayList<Ringtone>();
     SampleAdapter mAdapter;
+    SwipeRefreshLayout swipeLayout;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -67,16 +69,17 @@ public class MainFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void setRingtones( ArrayList<Ringtone> ringToneList ) {
+    public void onAvailableRingtonesUpdate( ArrayList<Ringtone> ringToneList ) {
         Timber.d( "Setting the ringtones in the view (called by otto)" );
         StringBuilder sBuild = new StringBuilder();
         for( Ringtone ring : ringToneList ) {
             sBuild.append( ring.toString() + '\n' );
         }
+        Timber.d("Setting these ringtones %s", sBuild.toString());
 
-        ringtones.addAll(ringToneList);
+        ringtones.clear();
+        ringtones.addAll( ringToneList );
 
-        Timber.d( "##!!!! HERE %s", sBuild.toString() );
         mAdapter.notifyDataSetChanged();
     }
 
@@ -105,10 +108,28 @@ public class MainFragment extends BaseFragment {
 
         StaggeredGridView gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
         // SampleAdapter mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, generateSampleData() );
-        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, ringtones);
+        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, ringtones );
         gridView.setAdapter( mAdapter );
 
+        swipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
+        swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeLayout.setOnRefreshListener( this );
+
         return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        getRingTonesAssynchronasly();
+        new Handler().postDelayed( new Runnable() {
+            @Override public void run() {
+                Timber.d("Inside on Refresh");
+                swipeLayout.setRefreshing( false );
+            }
+        }, 5000 );
     }
 
     public static ArrayList<Ringtone> generateSampleData() {
