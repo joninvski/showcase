@@ -1,7 +1,6 @@
 package com.ubaza.android.ui.activities;
 
 import android.content.ComponentName;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import butterknife.InjectView;
 
 import com.ubaza.android.R;
-import com.ubaza.android.services.CounterService;
 import com.ubaza.android.ui.common.BaseActivity;
 import com.ubaza.android.ui.fragments.MainFragment;
 
@@ -28,6 +26,8 @@ import android.view.View;
 import butterknife.OnItemClick;
 import timber.log.Timber;
 import com.ubaza.android.ui.fragments.AlternativeFragment;
+import com.ubaza.rest.UbazaRestClient;
+import com.ubaza.domain.Call;
 
 public class MainActivity extends BaseActivity {
 
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         setContentView( R.layout.activity_main );
 
         ButterKnife.inject( this );
-        String[] data = {"one", "two"};
+        String[] data = {"one", "two", "button"};
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled( true );
@@ -65,8 +65,12 @@ public class MainActivity extends BaseActivity {
                 Timber.d( "Selected pos %d", pos );
                 if( pos == 0 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
-                } else {
+                }
+                if( pos == 1 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
+                }
+                else {
+                    getCounterService().sendCallToServer(new Call(2, true ));
                 }
             }
         } );

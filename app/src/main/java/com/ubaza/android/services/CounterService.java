@@ -18,11 +18,14 @@ import com.ubaza.domain.Call;
 import java.util.ArrayList;
 import android.app.Notification;
 import com.ubaza.android.R;
+import com.ubaza.rest.UbazaRestClient;
+import timber.log.Timber;
 
-public class CounterService extends Service {
+public class CounterService extends BaseService {
 
     private List<Call> mCallList;
     private final IBinder mBinder = new LocalBinder();
+    private UbazaRestClient ubazaRest;
 
     /**
      * Factory method to make the desired Intent.
@@ -53,6 +56,20 @@ public class CounterService extends Service {
      */
     protected void addCall( Call call ) {
         mCallList.add( call );
+        sendCallToServer( call );
+    }
+
+
+    public void sendCallToServer( Call call ) {
+        try {
+            ubazaRest.pushCallAsync( call );
+        } catch ( retrofit.RetrofitError e ) {
+            Timber.d( "Exception %s", e );
+            Timber.e( "Body %s", e.getBody() );
+            Timber.e( "Response %s", e.getResponse() );
+            Timber.e( "Success type %s", e.getSuccessType() );
+            throw e;
+        }
     }
 
     /**
@@ -63,14 +80,15 @@ public class CounterService extends Service {
         mCallList = new ArrayList<Call>();
         startTelephonyListener();
 
-        Notification noti = new Notification.Builder(getApplicationContext())
-            .setContentTitle(getText(R.string.service_notification_title))
-            .setContentText(getText(R.string.service_notification_desc))
-            .setSmallIcon(R.drawable.doge)
-            .setPriority(Notification.PRIORITY_MIN) /* To not show the icon in status bar */
-            .build();
+        Notification noti = new Notification.Builder( getApplicationContext() )
+        .setContentTitle( getText( R.string.service_notification_title ) )
+        .setContentText( getText( R.string.service_notification_desc ) )
+        .setSmallIcon( R.drawable.doge )
+        .setPriority( Notification.PRIORITY_MIN ) /* To not show the icon in status bar */
+        .build();
 
-        startForeground(R.drawable.doge, noti);
+        ubazaRest = new UbazaRestClient( getBus() );
+        startForeground( R.drawable.doge, noti );
     }
 
     @Override

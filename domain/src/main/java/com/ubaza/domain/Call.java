@@ -25,4 +25,24 @@ public class Call {
         }
         return s.toString();
     }
+
+    /**
+     * Get mDuration.
+     *
+     * @return mDuration as int.
+     */
+    public int getDuration()
+    {
+        return mDuration;
+    }
+
+    /**
+     * Get mAnswered.
+     *
+     * @return mAnswered as boolean.
+     */
+    public boolean getAnswered()
+    {
+        return mAnswered;
+    }
 }

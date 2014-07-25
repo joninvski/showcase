@@ -1,4 +1,4 @@
-package com.ubaza.android;
+package com.ubaza.android.application;
 
 import android.app.Application;
 import android.content.Context;

@@ -14,7 +14,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 
 import com.squareup.otto.Bus;
-import com.ubaza.android.App;
+import com.ubaza.android.application.App;
 import com.ubaza.android.R;
 import com.ubaza.android.services.CounterService;
 
@@ -26,6 +26,7 @@ import timber.log.Timber;
 import com.squareup.otto.Subscribe;
 import android.widget.Toast;
 import retrofit.RetrofitError;
+import com.ubaza.domain.Call;
 
 public abstract class BaseActivity extends Activity {
 
@@ -83,7 +84,6 @@ public abstract class BaseActivity extends Activity {
     public void onNetworkError(RetrofitError error) {
         Toast.makeText(this, "Could not connect to server", Toast.LENGTH_SHORT).show();
     }
-
 
     public Bus getBus(){
         return ((App) getApplication()).getBus();

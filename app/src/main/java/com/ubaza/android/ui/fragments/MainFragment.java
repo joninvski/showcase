@@ -75,7 +75,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         for( Ringtone ring : ringToneList ) {
             sBuild.append( ring.toString() + '\n' );
         }
-        Timber.d("Setting these ringtones %s", sBuild.toString());
+        Timber.d( "Setting these ringtones %s", sBuild.toString() );
 
         ringtones.clear();
         ringtones.addAll( ringToneList );
@@ -112,10 +112,10 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         gridView.setAdapter( mAdapter );
 
         swipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
-        swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        swipeLayout.setColorSchemeResources( android.R.color.holo_blue_bright,
+                                             android.R.color.holo_green_light,
+                                             android.R.color.holo_orange_light,
+                                             android.R.color.holo_red_light );
         swipeLayout.setOnRefreshListener( this );
 
         return view;
@@ -126,7 +126,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         getRingTonesAssynchronasly();
         new Handler().postDelayed( new Runnable() {
             @Override public void run() {
-                Timber.d("Inside on Refresh");
+                Timber.d( "Inside on Refresh" );
                 swipeLayout.setRefreshing( false );
             }
         }, 5000 );

@@ -19,6 +19,12 @@ import retrofit.RetrofitError;
 import timber.log.Timber;
 import retrofit.http.POST;
 import com.ubaza.domain.Call;
+import java.util.Arrays;
+import retrofit.client.Header;
+import retrofit.http.Field;
+import retrofit.http.Body;
+import retrofit.http.FormUrlEncoded;
+import javax.xml.transform.Result;
 
 public class UbazaRestClient {
 
@@ -34,7 +40,10 @@ public class UbazaRestClient {
         bus.register(this);
 
         // Create an instance of our AsynchronousApi interface.
-        restAdapter = new RestAdapter.Builder().setEndpoint(UbazaRestClient.API_URL).build();
+        restAdapter = new RestAdapter.Builder()
+            .setEndpoint(UbazaRestClient.API_URL)
+            .setLogLevel(RestAdapter.LogLevel.FULL) /* TODO - Remove this line */
+            .build();
 
         // Create an instance of our GitHub API interface.
         ubaza = restAdapter.create(UbazaRestClient.Ubaza.class);
@@ -51,12 +60,30 @@ public class UbazaRestClient {
         }
     }
 
+    static class ReturnREST {
+        int code;
+        String desc;
+    }
+
+    static class EventREST {
+
+        public EventREST() { }
+
+        public EventREST(Call call) {
+            this.duration = call.getDuration();
+            this.answered = call.getAnswered();
+        }
+
+        int duration;
+        boolean answered;
+    }
+
     public interface Ubaza {
         @GET("/v1/ringtones")
         void getRingtones(Callback<ArrayList<RingtoneREST>> callback);
 
         @POST("/v1/event/add")
-        void insertEvent(String type);
+        void insertEvent(@Body EventREST event, Callback<ReturnREST> callback);
     }
 
     public void getRingtones( ){
@@ -84,9 +111,21 @@ public class UbazaRestClient {
     }
 
 
-    public void pushCall( Call call ){
+    public void pushCallAsync( Call call ){
         Timber.d("Pushing a call to the server");
 
-        ubaza.insertEvent(call.toString());
+        Callback<ReturnREST> callback = new Callback<ReturnREST>() {
+            @Override
+            public void success(ReturnREST ring, Response response) {
+                Timber.d("Set event on server %s", ring);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Timber.e("Failed to upload event %s", retrofitError.getUrl());
+            }
+        };
+
+        ubaza.insertEvent(new EventREST(call), callback);
     }
 }
