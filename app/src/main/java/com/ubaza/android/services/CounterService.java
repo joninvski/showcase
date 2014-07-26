@@ -1,10 +1,10 @@
 package com.ubaza.android.services;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import android.app.Notification;
 
 public class CounterService extends BaseService {
 
@@ -76,15 +77,15 @@ public class CounterService extends BaseService {
         mCallList = new ArrayList<Call>();
         startTelephonyListener();
 
-        Notification noti = new Notification.Builder( getApplicationContext() )
+        Notification noti = new NotificationCompat.Builder( getApplicationContext() )
         .setContentTitle( getText( R.string.service_notification_title ) )
         .setContentText( getText( R.string.service_notification_desc ) )
-        .setSmallIcon( R.drawable.doge )
-        .setPriority( Notification.PRIORITY_MIN ) /* To not show the icon in status bar */
+        .setSmallIcon( R.drawable.ubaza_logo_pb )
+        .setPriority( NotificationCompat.PRIORITY_MIN ) /* To not show the icon in status bar */
         .build();
 
         ubazaRest = new UbazaRestClient( getBus() );
-        startForeground( R.drawable.doge, noti );
+        startForeground( R.drawable.ubaza_logo_pb , noti );
     }
 
     @Override

@@ -34,10 +34,10 @@ public class MainActivity extends BaseActivity {
         String[] data = {"Main Layout", "Test Layout", "Send fake call"};
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled( true );
-        getActionBar().setHomeButtonEnabled( true );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setHomeButtonEnabled( true );
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data );
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getSupportActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data );
 
         mDrawerList.setAdapter( adapter );
 

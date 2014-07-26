@@ -18,8 +18,9 @@ import hugo.weaving.DebugLog;
 import retrofit.RetrofitError;
 
 import timber.log.Timber;
+import android.support.v7.app.ActionBarActivity;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends ActionBarActivity {
 
     private ServiceConnection mSvcConn = prepareServiceConnection();
     private CounterService mCounterService;

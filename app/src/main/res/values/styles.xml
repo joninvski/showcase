@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
 
     </style>
@@ -16,7 +16,5 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>
-
-
 
 </resources>
