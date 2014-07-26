@@ -18,28 +18,4 @@
     <color name="card_activated_kitkat">#ADE1F4</color>
     <color name="card_foreground_activated_kitkat">#99ADE1F4</color>
 
-    <!-- Purchase -->
-    <color name="demo_purchase_normal">#ececec</color>
-    <color name="demo_purchase_pressed">#CC2A84A5</color>
-
-    <!-- color card -->
-    <color name="demo_card_background_color1">#FFBB33</color>
-    <color name="demo_card_background_color2">#98CC00</color>
-    <color name="demo_card_background_color3">#A966CC</color>
-    <color name="demo_card_background_color4">#33B4E4</color>
-    <color name="demo_card_background_color5">#FF4343</color>
-
-    <!-- Birth new-->
-    <color name="demo_card_header_birth_color">#707070</color>
-    <color name="demo_card_line_birth_color">#E5E5E5</color>
-
-    <!-- Weather -->
-    <color name="demo_card_line_weather_color">#E5E5E5</color>
-    <color name="demo_card_weather_city_color">#A4A4A4</color>
-    <color name="demo_card_weather_temperature_color">#868686</color>
-
-    <!-- Stock -->
-    <color name="demo_card_stock_negative">#FF4646</color>
-    <color name="demo_card_stock_positive">#29A426</color>
-
 </resources>
