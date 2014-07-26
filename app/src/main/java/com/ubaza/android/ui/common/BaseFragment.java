@@ -11,11 +11,6 @@ import android.view.View;
 
 public class BaseFragment extends Fragment {
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     public App getApplication() {
         return (App) getActivity().getApplication();
     }

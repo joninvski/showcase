@@ -12,11 +12,6 @@ public class App extends Application {
     // The publish subscribe bus
     private Bus mBus;
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
-
     /**
      * Build object graph on creation so that objects are available
      */

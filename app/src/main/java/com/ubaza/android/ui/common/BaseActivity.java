@@ -1,6 +1,5 @@
 package com.ubaza.android.ui.common;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
