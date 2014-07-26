@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         setContentView( R.layout.activity_main );
 
         ButterKnife.inject( this );
-        String[] data = {"one", "two", "button"};
+        String[] data = {"Main Layout", "Test Layout", "Send fake call"};
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled( true );
@@ -51,8 +51,7 @@ public class MainActivity extends BaseActivity {
 
         mDrawerList.setAdapter( adapter );
 
-        getFragmentManager().beginTransaction()
-        .replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+        getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance()).commit();
     }
 
     @DebugLog
@@ -66,11 +65,11 @@ public class MainActivity extends BaseActivity {
                 if( pos == 0 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
                 }
-                if( pos == 1 ) {
+                else if( pos == 1 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
                 }
-                else {
-                    getCounterService().sendCallToServer(new Call(2, true ));
+                else if( pos == 2 ) {
+                    getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
                 }
             }
         } );

@@ -55,13 +55,10 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private List<Ringtone> ringtones = new ArrayList<Ringtone>();
     SampleAdapter mAdapter;
     SwipeRefreshLayout swipeLayout;
+    StaggeredGridView gridView;
 
     public static MainFragment newInstance() {
         return new MainFragment();
-    }
-
-    public MainFragment () {
-        // Required empty public constructor
     }
 
     public void getRingTonesAssynchronasly() {
@@ -89,6 +86,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         super.onResume();
         getBus().register( this );
         getRingTonesAssynchronasly();
+
         getCalls();
     }
 
@@ -106,8 +104,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
         ubazaRest = new UbazaRestClient( getBus() );
 
-        StaggeredGridView gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
-        // SampleAdapter mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, generateSampleData() );
+        gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
+
         mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, ringtones );
         gridView.setAdapter( mAdapter );
 
@@ -130,23 +128,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 swipeLayout.setRefreshing( false );
             }
         }, 5000 );
-    }
-
-    public static ArrayList<Ringtone> generateSampleData() {
-        String repeat = " repeat";
-        final int SAMPLE_DATA_ITEM_COUNT = 10;
-        final ArrayList<Ringtone> datas = new ArrayList<Ringtone>();
-        Random ran = new Random( 1 );
-        for ( int i = 0; i < SAMPLE_DATA_ITEM_COUNT; i++ ) {
-
-            int[] images = { R.drawable.doge, R.drawable.doge2, R.drawable.doge3, R.drawable.doge4 };
-            String nextImage = Integer.toString( images[ran.nextInt( images.length )] );
-
-            Ringtone data = new Ringtone( "CardA", nextImage, ran.nextInt( 100 ) );
-            int x = ran.nextInt( i + SAMPLE_DATA_ITEM_COUNT );
-            datas.add( data );
-        }
-        return datas;
     }
 
     @DebugLog
