@@ -1,33 +1,23 @@
 package com.ubaza.android.ui.activities;
 
-import android.content.ComponentName;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Messenger;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 import com.ubaza.android.R;
 import com.ubaza.android.ui.common.BaseActivity;
+import com.ubaza.android.ui.fragments.AlternativeFragment;
 import com.ubaza.android.ui.fragments.MainFragment;
 
 import hugo.weaving.DebugLog;
 
-import java.util.Arrays;
-import java.util.List;
-import android.widget.ArrayAdapter;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import android.support.v4.widget.DrawerLayout;
-import android.view.View;
-import butterknife.OnItemClick;
 import timber.log.Timber;
-import com.ubaza.android.ui.fragments.AlternativeFragment;
-import com.ubaza.rest.UbazaRestClient;
-import com.ubaza.domain.Call;
 
 public class MainActivity extends BaseActivity {
 

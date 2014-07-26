@@ -7,16 +7,15 @@ import android.view.ViewGroup;
 
 import com.ubaza.android.R;
 import com.ubaza.android.ui.common.BaseFragment;
+import com.ubaza.android.ui.CustomCard;
 
 import hugo.weaving.DebugLog;
 
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
-import com.ubaza.android.ui.CustomCard;
+import it.gmariotti.cardslib.library.view.CardView;
 
 public class AlternativeFragment extends BaseFragment {
 
@@ -73,9 +72,9 @@ public class AlternativeFragment extends BaseFragment {
         CardView cardView = ( CardView ) view.findViewById( id );
 
         ViewToClickToExpand viewToClickToExpand =
-                ViewToClickToExpand.builder()
-                        .setupView(cardView);
-        card.setViewToClickToExpand(viewToClickToExpand);
+            ViewToClickToExpand.builder()
+            .setupView( cardView );
+        card.setViewToClickToExpand( viewToClickToExpand );
 
         cardView.setCard( card );
     }

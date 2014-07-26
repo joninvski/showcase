@@ -1,12 +1,8 @@
 package com.ubaza.android.application;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.squareup.otto.Bus;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static timber.log.Timber.DebugTree;
 
