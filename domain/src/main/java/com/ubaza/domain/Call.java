@@ -7,11 +7,20 @@ public class Call {
     private int mDuration;
     private boolean mAnswered;
     private int mVolume;
+    private long mDate;
+
+    public Call(int duration, boolean answered, int volume, long date) {
+        mDuration = duration;
+        mAnswered = answered;
+        mVolume = volume;
+        mDate = date;
+    }
 
     public Call(int duration, boolean answered, int volume) {
         mDuration = duration;
         mAnswered = answered;
         mVolume = volume;
+        mDate = System.currentTimeMillis();
     }
 
     @Override
@@ -66,5 +75,25 @@ public class Call {
     public void setVolume(int volume)
     {
         this.mVolume = mVolume;
+    }
+
+    /**
+     * Get date.
+     *
+     * @return date as long.
+     */
+    public long getDate()
+    {
+        return mDate;
+    }
+
+    /**
+     * Set date.
+     *
+     * @param date the value to set.
+     */
+    public void setDate(long date)
+    {
+        this.mDate = date;
     }
 }

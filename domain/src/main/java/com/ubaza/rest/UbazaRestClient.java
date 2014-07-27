@@ -73,11 +73,13 @@ public class UbazaRestClient {
             this.duration = call.getDuration();
             this.answered = call.getAnswered();
             this.volume = call.getVolume();
+            this.date = call.getDate();
         }
 
         int duration;
         boolean answered;
         int volume;
+        long date;
     }
 
     public interface Ubaza {
