@@ -28,6 +28,7 @@ import retrofit.RetrofitError;
 import timber.log.Timber;
 import com.squareup.okhttp.Cache;
 import retrofit.client.OkClient;
+import retrofit.RequestInterceptor;
 
 
 public class UbazaRestClient {
@@ -39,7 +40,7 @@ public class UbazaRestClient {
     final RestAdapter restAdapter;
     final UbazaRestClient.Ubaza ubaza;
 
-    public UbazaRestClient( Bus bus , String cacheAbsolutePath ) {
+    public UbazaRestClient( Bus bus , String cacheAbsolutePath , RequestInterceptor requestInterceptor ) {
         mBus = bus;
         bus.register( this );
 
@@ -55,13 +56,14 @@ public class UbazaRestClient {
             .setEndpoint( UbazaRestClient.API_URL )
             .setClient ( new OkClient( client ) )
             .setLogLevel( RestAdapter.LogLevel.FULL ) /* TODO - Remove this line */
+            .setRequestInterceptor( requestInterceptor )
             .build();
 
             // Create an instance of our GitHub API interface.
             ubaza = restAdapter.create( UbazaRestClient.Ubaza.class );
         } catch ( IOException e ) {
             Timber.e( "IOExceptio %s", e );
-            throw new RuntimeException(e.toString());
+            throw new RuntimeException( e.toString() );
         }
     }
 
@@ -100,7 +102,6 @@ public class UbazaRestClient {
 
     public interface Ubaza {
         @GET( "/v1/ringtones" )
-        @Headers( "Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200" )
         void getRingtones( Callback<ArrayList<RingtoneREST>> callback );
 
         @POST( "/v1/event/add" )

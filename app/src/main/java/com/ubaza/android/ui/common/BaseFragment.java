@@ -39,7 +39,7 @@ public class BaseFragment extends Fragment {
         ButterKnife.inject( this, view );
     }
 
-    public App getApplication() {
+    public App getUbazaApplication() {
         return (App) getActivity().getApplication();
     }
 
@@ -48,6 +48,6 @@ public class BaseFragment extends Fragment {
     }
 
     public Bus getBus() {
-        return getApplication().getBus();
+        return getUbazaApplication().getBus();
     }
 }

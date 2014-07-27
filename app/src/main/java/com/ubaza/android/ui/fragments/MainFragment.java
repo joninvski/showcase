@@ -77,7 +77,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
-        mUbazaRest = new UbazaRestClient( getBus(), getApplication().getCacheDir().getAbsolutePath() );
+        mUbazaRest = new UbazaRestClient( getBus(), getUbazaApplication().getCacheDir().getAbsolutePath(), getUbazaApplication().createInterceptor());
 
         gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 

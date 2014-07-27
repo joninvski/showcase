@@ -65,7 +65,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        getBus().unregister(this);
+        getBus().unregister( this );
     }
 
     /**
@@ -96,7 +96,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         Toast.makeText( this, "Could not connect to server", Toast.LENGTH_SHORT ).show();
     }
 
+    public App getUbazaApplication() {
+        return ( App ) getApplication();
+    }
+
     public Bus getBus() {
-        return ( ( App ) getApplication() ).getBus();
+        return getUbazaApplication().getBus();
     }
 }

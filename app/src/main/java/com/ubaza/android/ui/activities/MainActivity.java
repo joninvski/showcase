@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
         mDrawerList.setAdapter( adapter );
 
         // Start the fragment that shows the ringtones
-        getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance()).commit();
+        getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
     }
 
     /**
@@ -62,12 +62,10 @@ public class MainActivity extends BaseActivity {
                 super.onDrawerClosed( drawerView );
                 if( pos == 0 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
-                }
-                else if( pos == 1 ) {
+                } else if( pos == 1 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
-                }
-                else if( pos == 2 ) {
-                    UbazaRestClient ubazaRest = new UbazaRestClient( getBus(), getApplication().getCacheDir().getAbsolutePath() );
+                } else if( pos == 2 ) {
+                    UbazaRestClient ubazaRest = new UbazaRestClient( getBus(), getApplication().getCacheDir().getAbsolutePath(), getUbazaApplication().createInterceptor() );
                     ubazaRest.pushCallAsync( new Call( 42, true, 88 ) );
                 }
             }
