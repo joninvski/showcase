@@ -59,7 +59,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onResume() {
         super.onResume();
-        getBus().register( this );
         getRingTonesAssynchronasly();
 
         getCalls();
@@ -68,7 +67,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @DebugLog
     @Override
     public void onPause() {
-        getBus().unregister( this );
         super.onPause();
     }
 

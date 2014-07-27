@@ -44,8 +44,19 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        getBus().register( this );
         startCallListenerService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getBus().register( this );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getBus().unregister(this);
     }
 
     /**

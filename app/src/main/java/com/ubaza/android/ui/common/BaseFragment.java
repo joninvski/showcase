@@ -7,6 +7,7 @@ import com.squareup.otto.Bus;
 import com.ubaza.android.services.CounterService;
 import butterknife.ButterKnife;
 import android.view.View;
+import hugo.weaving.DebugLog;
 
 
 public class BaseFragment extends Fragment {
@@ -19,10 +20,23 @@ public class BaseFragment extends Fragment {
         return ((BaseActivity) getActivity()).getCounterService();
     }
 
+    @DebugLog
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBus().register( this );
+    }
+
+    @DebugLog
+    @Override
+    public void onPause() {
+        super.onPause();
+        getBus().unregister( this );
+    }
+
     @Override
     public void onViewCreated( View view, Bundle savedInstanceState ) {
         super.onViewCreated( view, savedInstanceState );
-        getBus().register(this);
         ButterKnife.inject( this, view );
     }
 
