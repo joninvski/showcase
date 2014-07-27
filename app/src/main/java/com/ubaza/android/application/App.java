@@ -8,6 +8,12 @@ import static timber.log.Timber.DebugTree;
 
 import timber.log.Timber;
 
+/**
+ * Implements the Ubaza android application
+ *
+ * Responsible to initializing the otto bus and the timber
+ * debugtree for all the app
+ */
 public class App extends Application {
     // The publish subscribe bus
     private Bus mBus;

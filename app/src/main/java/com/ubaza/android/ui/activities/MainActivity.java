@@ -17,10 +17,9 @@ import com.ubaza.android.ui.fragments.MainFragment;
 
 import hugo.weaving.DebugLog;
 
-import timber.log.Timber;
-
 public class MainActivity extends BaseActivity {
 
+    // Layout views
     @InjectView( R.id.left_drawer ) ListView mDrawerList;
     @InjectView( R.id.drawer_layout ) DrawerLayout mDrawer;
 
@@ -30,20 +29,28 @@ public class MainActivity extends BaseActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
+        /* Inject the views managed by butterknife */
         ButterKnife.inject( this );
+
+        /* The navigation drawer items TODO - add to string array */
         String[] data = {"Main Layout", "Test Layout", "Send fake call"};
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer
+        // enable ActionBar app icon to behave as action to toggle nav drawer TODO - Should we use this
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         getSupportActionBar().setHomeButtonEnabled( true );
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getSupportActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data );
-
+        // Create the adapter for the drawer layout on the left
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getSupportActionBar().getThemedContext(),
+                android.R.layout.simple_list_item_1, data );
         mDrawerList.setAdapter( adapter );
 
+        // Start the fragment that shows the ringtones
         getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance()).commit();
     }
 
+    /**
+     * Function called when a button on the drawer layout is clicked
+     */
     @DebugLog
     @OnItemClick( R.id.left_drawer )
     protected void onLeftMenuItemClick( final int pos ) {
@@ -51,7 +58,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDrawerClosed( View drawerView ) {
                 super.onDrawerClosed( drawerView );
-                Timber.d( "Selected pos %d", pos );
                 if( pos == 0 ) {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
                 }

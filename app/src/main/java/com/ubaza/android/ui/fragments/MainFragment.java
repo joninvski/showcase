@@ -2,7 +2,6 @@ package com.ubaza.android.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,18 +25,21 @@ import timber.log.Timber;
 
 public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private UbazaRestClient ubazaRest;
-    private List<Ringtone> ringtones = new ArrayList<Ringtone>();
-    SampleAdapter mAdapter;
-    SwipeRefreshLayout swipeLayout;
-    StaggeredGridView gridView;
+    // Layout views
+    private StaggeredGridView gridView;      // The esty style grid cards view
+    private SwipeRefreshLayout mSwipeLayout; // The pull down to refresh view
+
+    // Private members
+    private UbazaRestClient mUbazaRest;      // The rest client for the ubaza server (TODO - This should be a singleton of the application)
+    private SampleAdapter mAdapter;          // The adapter to show the ringtones
+    private List<Ringtone> mRingtones = new ArrayList<Ringtone>();
 
     public static MainFragment newInstance() {
         return new MainFragment();
     }
 
     public void getRingTonesAssynchronasly() {
-        ubazaRest.getRingtones();
+        mUbazaRest.getRingtones();
     }
 
     @Subscribe
@@ -49,8 +51,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
         Timber.d( "Setting these ringtones %s", sBuild.toString() );
 
-        ringtones.clear();
-        ringtones.addAll( ringToneList );
+        mRingtones.clear();
+        mRingtones.addAll( ringToneList );
 
         mAdapter.notifyDataSetChanged();
     }
@@ -75,32 +77,27 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
-        ubazaRest = new UbazaRestClient( getBus() );
+        mUbazaRest = new UbazaRestClient( getBus() );
 
         gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 
-        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, ringtones );
+        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, mRingtones );
         gridView.setAdapter( mAdapter );
 
-        swipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
-        swipeLayout.setColorSchemeResources( android.R.color.holo_blue_bright,
+        mSwipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
+        mSwipeLayout.setColorSchemeResources( android.R.color.holo_blue_bright,
                                              android.R.color.holo_green_light,
                                              android.R.color.holo_orange_light,
                                              android.R.color.holo_red_light );
-        swipeLayout.setOnRefreshListener( this );
+        mSwipeLayout.setOnRefreshListener( this );
 
         return view;
     }
 
     @Override
     public void onRefresh() {
+        Timber.d( "User asked to to refresh the ringtones" );
         getRingTonesAssynchronasly();
-        new Handler().postDelayed( new Runnable() {
-            @Override public void run() {
-                Timber.d( "Inside on Refresh" );
-                swipeLayout.setRefreshing( false );
-            }
-        }, 5000 );
     }
 
     @DebugLog
@@ -113,7 +110,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void getCalls() {
         if( getCounterService() != null ) {
             List<Call> calls = getCounterService().getCalls();
-            Timber.d( "%s", Call.toString( calls ) );
         }
     }
 

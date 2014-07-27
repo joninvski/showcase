@@ -19,8 +19,17 @@ import retrofit.RetrofitError;
 import timber.log.Timber;
 import android.support.v7.app.ActionBarActivity;
 
+/*
+ * Provides an abstraction for all activities to extend
+ *
+ * It takes care of otto bus register/unregister events.
+ * Activities do not have to do this. Only post or receive events
+ *
+ * It also binds the activity to the service which tracks calls.
+ * */
 public abstract class BaseActivity extends ActionBarActivity {
 
+    // The connection for the counter service (TODO - This should be injected in the future)
     private ServiceConnection mSvcConn = prepareServiceConnection();
     private CounterService mCounterService;
 
