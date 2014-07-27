@@ -16,6 +16,8 @@ import com.ubaza.android.ui.fragments.AlternativeFragment;
 import com.ubaza.android.ui.fragments.MainFragment;
 
 import hugo.weaving.DebugLog;
+import com.ubaza.rest.UbazaRestClient;
+import com.ubaza.domain.Call;
 
 public class MainActivity extends BaseActivity {
 
@@ -65,7 +67,8 @@ public class MainActivity extends BaseActivity {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
                 }
                 else if( pos == 2 ) {
-                    getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
+                    UbazaRestClient ubazaRest = new UbazaRestClient( getBus() );
+                    ubazaRest.pushCallAsync( new Call( 42, true, 88 ) );
                 }
             }
         } );

@@ -72,10 +72,12 @@ public class UbazaRestClient {
         public EventREST(Call call) {
             this.duration = call.getDuration();
             this.answered = call.getAnswered();
+            this.volume = call.getVolume();
         }
 
         int duration;
         boolean answered;
+        int volume;
     }
 
     public interface Ubaza {
