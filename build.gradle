@@ -32,12 +32,14 @@ subprojects {
                 doLast {
                     println "$project.configurations.compile.asPath\n"
                     versionfile.text += "$project.configurations.compile.asPath"
+                    versionfile.text += ":"
                 }
             }
             if (configurations.find { it.name == 'androidTestCompile' }) {
                 doLast {
                     println "$project.configurations.androidTestCompile.asPath\n"
                     versionfile.text += "$project.configurations.androidTestCompile.asPath"
+                    versionfile.text += ":"
                 }
             }
         }
