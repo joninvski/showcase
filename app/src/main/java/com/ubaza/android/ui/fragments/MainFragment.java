@@ -77,7 +77,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
-        mUbazaRest = new UbazaRestClient( getBus() );
+        mUbazaRest = new UbazaRestClient( getBus(), getApplication().getCacheDir().getAbsolutePath() );
 
         gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 
@@ -86,9 +86,9 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         mSwipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
         mSwipeLayout.setColorSchemeResources( android.R.color.holo_blue_bright,
-                                             android.R.color.holo_green_light,
-                                             android.R.color.holo_orange_light,
-                                             android.R.color.holo_red_light );
+                                              android.R.color.holo_green_light,
+                                              android.R.color.holo_orange_light,
+                                              android.R.color.holo_red_light );
         mSwipeLayout.setOnRefreshListener( this );
 
         return view;

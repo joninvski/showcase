@@ -84,7 +84,7 @@ public class CounterService extends BaseService {
         .setPriority( NotificationCompat.PRIORITY_MIN ) /* To not show the icon in status bar */
         .build();
 
-        ubazaRest = new UbazaRestClient( getBus() );
+        ubazaRest = new UbazaRestClient( getBus(), getUbazaApplication().getCacheDir().getAbsolutePath() );
         startForeground( R.drawable.ubaza_logo_pb , noti );
     }
 

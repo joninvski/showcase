@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
                     getFragmentManager().beginTransaction().replace( R.id.fragment_container, AlternativeFragment.newInstance() ).commit();
                 }
                 else if( pos == 2 ) {
-                    UbazaRestClient ubazaRest = new UbazaRestClient( getBus() );
+                    UbazaRestClient ubazaRest = new UbazaRestClient( getBus(), getApplication().getCacheDir().getAbsolutePath() );
                     ubazaRest.pushCallAsync( new Call( 42, true, 88 ) );
                 }
             }

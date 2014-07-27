@@ -1,30 +1,34 @@
 package com.ubaza.rest;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-
+import com.ubaza.domain.Call;
 import com.ubaza.domain.Ringtone;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import retrofit.Callback;
-
-import retrofit.client.Response;
-
-import retrofit.http.GET;
-
-import retrofit.RestAdapter;
-
-import retrofit.RetrofitError;
-import timber.log.Timber;
-import retrofit.http.POST;
-import com.ubaza.domain.Call;
-import java.util.Arrays;
-import retrofit.client.Header;
-import retrofit.http.Field;
-import retrofit.http.Body;
-import retrofit.http.FormUrlEncoded;
 import javax.xml.transform.Result;
+
+import retrofit.Callback;
+import retrofit.client.Header;
+import retrofit.client.Response;
+import retrofit.http.Body;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
+import retrofit.http.Headers;
+import retrofit.http.POST;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+
+import timber.log.Timber;
+import com.squareup.okhttp.Cache;
+import retrofit.client.OkClient;
+
 
 public class UbazaRestClient {
 
@@ -33,20 +37,32 @@ public class UbazaRestClient {
     public static final String TAG = "UbazaRestClient";
     private final Bus mBus;
     final RestAdapter restAdapter;
-    UbazaRestClient.Ubaza ubaza;
+    final UbazaRestClient.Ubaza ubaza;
 
-    public UbazaRestClient(Bus bus) {
+    public UbazaRestClient( Bus bus , String cacheAbsolutePath ) {
         mBus = bus;
-        bus.register(this);
+        bus.register( this );
 
-        // Create an instance of our AsynchronousApi interface.
-        restAdapter = new RestAdapter.Builder()
-            .setEndpoint(UbazaRestClient.API_URL)
-            .setLogLevel(RestAdapter.LogLevel.FULL) /* TODO - Remove this line */
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        File cacheDirectory = new File( cacheAbsolutePath , "HttpCache" );
+        try {
+            Cache cache = new Cache( cacheDirectory, cacheSize );
+            OkHttpClient client = new OkHttpClient();
+            client.setCache( cache );
+
+            // Create an instance of our AsynchronousApi interface.
+            restAdapter = new RestAdapter.Builder()
+            .setEndpoint( UbazaRestClient.API_URL )
+            .setClient ( new OkClient( client ) )
+            .setLogLevel( RestAdapter.LogLevel.FULL ) /* TODO - Remove this line */
             .build();
 
-        // Create an instance of our GitHub API interface.
-        ubaza = restAdapter.create(UbazaRestClient.Ubaza.class);
+            // Create an instance of our GitHub API interface.
+            ubaza = restAdapter.create( UbazaRestClient.Ubaza.class );
+        } catch ( IOException e ) {
+            Timber.e( "IOExceptio %s", e );
+            throw new RuntimeException(e.toString());
+        }
     }
 
     static class RingtoneREST {
@@ -56,7 +72,7 @@ public class UbazaRestClient {
         int price;
 
         private Ringtone toDomain() {
-            return new Ringtone(name, uri, price);
+            return new Ringtone( name, uri, price );
         }
     }
 
@@ -69,7 +85,7 @@ public class UbazaRestClient {
 
         public EventREST() { }
 
-        public EventREST(Call call) {
+        public EventREST( Call call ) {
             this.duration = call.getDuration();
             this.answered = call.getAnswered();
             this.volume = call.getVolume();
@@ -83,53 +99,54 @@ public class UbazaRestClient {
     }
 
     public interface Ubaza {
-        @GET("/v1/ringtones")
-        void getRingtones(Callback<ArrayList<RingtoneREST>> callback);
+        @GET( "/v1/ringtones" )
+        @Headers( "Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200" )
+        void getRingtones( Callback<ArrayList<RingtoneREST>> callback );
 
-        @POST("/v1/event/add")
-        void insertEvent(@Body EventREST event, Callback<ReturnREST> callback);
+        @POST( "/v1/event/add" )
+        void insertEvent( @Body EventREST event, Callback<ReturnREST> callback );
     }
 
-    public void getRingtones( ){
-        Timber.d("Getting ringtones");
+    public void getRingtones( ) {
+        Timber.d( "Getting ringtones" );
 
         Callback<ArrayList<RingtoneREST>> callback = new Callback<ArrayList<RingtoneREST>>() {
             @Override
-            public void success(ArrayList<RingtoneREST> list, Response response) {
+            public void success( ArrayList<RingtoneREST> list, Response response ) {
                 ArrayList<Ringtone> retList = new ArrayList<Ringtone>();
-                for(RingtoneREST rest : list)
-                    retList.add(rest.toDomain());
+                for( RingtoneREST rest : list )
+                    retList.add( rest.toDomain() );
 
-                Timber.d("Posting %d ringtones to otto", list.size());
-                mBus.post(retList);
+                Timber.d( "Posting %d ringtones to otto", list.size() );
+                mBus.post( retList );
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-                Timber.e("Failed %s", retrofitError.getUrl());
-                mBus.post(retrofitError);
+            public void failure( RetrofitError retrofitError ) {
+                Timber.e( "Failed %s", retrofitError.getUrl() );
+                mBus.post( retrofitError );
             }
         };
 
-        ubaza.getRingtones(callback);
+        ubaza.getRingtones( callback );
     }
 
 
-    public void pushCallAsync( Call call ){
-        Timber.d("Pushing a call to the server");
+    public void pushCallAsync( Call call ) {
+        Timber.d( "Pushing a call to the server" );
 
         Callback<ReturnREST> callback = new Callback<ReturnREST>() {
             @Override
-            public void success(ReturnREST ring, Response response) {
-                Timber.d("Set event on server %s", ring);
+            public void success( ReturnREST ring, Response response ) {
+                Timber.d( "Set event on server %s", ring );
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-                Timber.e("Failed to upload event %s", retrofitError.getUrl());
+            public void failure( RetrofitError retrofitError ) {
+                Timber.e( "Failed to upload event %s", retrofitError.getUrl() );
             }
         };
 
-        ubaza.insertEvent(new EventREST(call), callback);
+        ubaza.insertEvent( new EventREST( call ), callback );
     }
 }
