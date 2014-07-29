@@ -22,7 +22,6 @@ public class CounterService extends BaseService {
 
     private List<Call> mCallList;
     private final IBinder mBinder = new LocalBinder();
-    private UbazaRestClient ubazaRest;
 
     /**
      * Factory method to make the desired Intent.
@@ -59,7 +58,7 @@ public class CounterService extends BaseService {
 
     public void sendCallToServer( Call call ) {
         try {
-            ubazaRest.pushCallAsync( call );
+            getRestClient().pushCallAsync( call );
         } catch ( retrofit.RetrofitError e ) {
             Timber.d( "Exception %s", e );
             Timber.e( "Body %s", e.getBody() );
@@ -84,7 +83,6 @@ public class CounterService extends BaseService {
         .setPriority( NotificationCompat.PRIORITY_MIN ) /* To not show the icon in status bar */
         .build();
 
-        ubazaRest = new UbazaRestClient( getBus(), getUbazaApplication().getCacheDir().getAbsolutePath(), getUbazaApplication().createInterceptor() );
         startForeground( R.drawable.ubaza_logo_pb , noti );
     }
 

@@ -23,7 +23,7 @@ allprojects {
 }
 
 subprojects {
-    ext.versionfile = new File('CLASSPATH')
+    ext.versionfile = new File('CLASSPATH_AUX')
     versionfile.text = ''
 
     printDependencies {

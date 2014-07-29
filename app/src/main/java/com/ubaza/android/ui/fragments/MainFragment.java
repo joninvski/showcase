@@ -14,7 +14,6 @@ import com.ubaza.android.ui.adapter.SampleAdapter;
 import com.ubaza.android.ui.common.BaseFragment;
 import com.ubaza.domain.Call;
 import com.ubaza.domain.Ringtone;
-import com.ubaza.rest.UbazaRestClient;
 
 import hugo.weaving.DebugLog;
 
@@ -30,7 +29,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeLayout; // The pull down to refresh view
 
     // Private members
-    private UbazaRestClient mUbazaRest;      // The rest client for the ubaza server (TODO - This should be a singleton of the application)
     private SampleAdapter mAdapter;          // The adapter to show the ringtones
     private List<Ringtone> mRingtones = new ArrayList<Ringtone>();
 
@@ -39,7 +37,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     public void getRingTonesAssynchronasly() {
-        mUbazaRest.getRingtones();
+        getRestClient().getRingtones();
     }
 
     @Subscribe
@@ -77,7 +75,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
-        mUbazaRest = new UbazaRestClient( getBus(), getUbazaApplication().getCacheDir().getAbsolutePath(), getUbazaApplication().createInterceptor());
 
         gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 

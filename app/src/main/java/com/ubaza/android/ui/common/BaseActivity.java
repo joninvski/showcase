@@ -18,6 +18,7 @@ import retrofit.RetrofitError;
 
 import timber.log.Timber;
 import android.support.v7.app.ActionBarActivity;
+import com.ubaza.rest.UbazaRestClient;
 
 /*
  * Provides an abstraction for all activities to extend
@@ -102,5 +103,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public Bus getBus() {
         return getUbazaApplication().getBus();
+    }
+
+    public UbazaRestClient getRestClient() {
+        return getUbazaApplication().getUbazaRestClient();
     }
 }

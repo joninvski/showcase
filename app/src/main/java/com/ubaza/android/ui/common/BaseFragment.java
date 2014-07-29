@@ -8,6 +8,7 @@ import com.ubaza.android.services.CounterService;
 import butterknife.ButterKnife;
 import android.view.View;
 import hugo.weaving.DebugLog;
+import com.ubaza.rest.UbazaRestClient;
 
 /*
  * Provides an abstraction for all fragments to extend
@@ -49,5 +50,9 @@ public class BaseFragment extends Fragment {
 
     public Bus getBus() {
         return getUbazaApplication().getBus();
+    }
+
+    public UbazaRestClient getRestClient() {
+        return getUbazaApplication().getUbazaRestClient();
     }
 }

@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Context;
 import retrofit.RequestInterceptor;
+import com.ubaza.rest.UbazaRestClient;
 
 /**
  * Implements the Ubaza android application
@@ -21,6 +22,7 @@ import retrofit.RequestInterceptor;
 public class App extends Application {
     // The publish subscribe bus
     private Bus mBus;
+    private UbazaRestClient mUbazaRestClient;
 
     /**
      * Build object graph on creation so that objects are available
@@ -34,6 +36,9 @@ public class App extends Application {
 
         // Construct otto bus
         if( mBus == null ) mBus = new Bus();
+
+        // Create the rest client
+        mUbazaRestClient = new UbazaRestClient( getBus(), getCacheDir().getAbsolutePath(), createInterceptor());
     }
 
 
@@ -53,6 +58,11 @@ public class App extends Application {
         return false;
     }
 
+    public UbazaRestClient getUbazaRestClient() {
+        return mUbazaRestClient;
+    }
+
+
     public RequestInterceptor createInterceptor() {
         return new RequestInterceptor() {
             @Override
@@ -61,11 +71,11 @@ public class App extends Application {
                 if ( isOnline() ) {
                     int maxAge = 30; // read from cache for 0.5 minute
                     request.addHeader( "Cache-Control", "public, max-age=" + maxAge );
-                    Timber.d("Using online 30 seconds cache");
+                    Timber.d( "Using online 30 seconds cache" );
                 } else {
                     int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
                     request.addHeader( "Cache-Control", "public, only-if-cached, max-stale=" + maxStale );
-                    Timber.d("Using offline 4 weeks cache");
+                    Timber.d( "Using offline 4 weeks cache" );
                 }
             }
         };
