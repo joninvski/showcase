@@ -29,8 +29,6 @@
     <module name="NewlineAtEndOfFile" />
 
     <module name="TreeWalker">
-
-
         <!-- Checks for imports -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport" />
@@ -56,5 +54,7 @@
             <property name="packageAllowed" value="true" />
             <property name="protectedAllowed" value="true" />
         </module>
+
+        <module name="MissingOverride" />
     </module>
 </module>
