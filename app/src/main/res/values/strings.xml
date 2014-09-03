@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Ubaza Client App</string>
-    <string name="service_notification_title">Ubaza service is running</string>
+    <string name="app_name">Showcase</string>
+    <string name="service_notification_title">Showcase service is running</string>
     <string name="service_notification_desc">Just receive calls and win money</string>
 
 </resources>

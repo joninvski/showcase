@@ -1,5 +1,7 @@
-Even Better Passwork Maker
-==========================
+Showcase
+========
+
+Let companies battle with their logos
 
 Compile
 -------
