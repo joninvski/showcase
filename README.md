@@ -3,6 +3,11 @@ Showcase
 
 Let companies battle with their logos
 
+<img src="https://github.com/joninvski/showcase/raw/master/images/screenshot.png" alt="screenshot" width="230px">
+
+The server part is [here](https://github.com/joninvski/showcase/raw/master/images/screenshot.png).
+
+
 Compile
 -------
 
