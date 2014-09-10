@@ -3,12 +3,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
-        classpath 'com.github.nrudenko:gradle-android-cq-plugin:0.1+'
-        classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.10.+'
-
+        classpath parent.ext.libraries.hugo_gradle
+        classpath parent.ext.libraries.androidtools_gradle
+        classpath parent.ext.libraries.spoon_gradle
+        classpath parent.ext.libraries.sdkmanager_gradle
+        classpath parent.ext.libraries.android_cq_gradle
     }
 }
 
@@ -40,27 +39,24 @@ android {
 }
 
 dependencies {
-    compile 'com.etsy.android.grid:library:1.0.+'
-    compile 'com.github.gabrielemariotti.cards:library:1.8.0'
-    compile 'com.jakewharton.hugo:hugo-runtime:1.1.+'
-    compile 'com.jakewharton.timber:timber:2.4.+'
-    compile 'com.jakewharton:butterknife:5.1.+'
-    compile 'com.joanzapata.android:android-iconify:1.0.+'
-    compile 'com.squareup.picasso:picasso:2.3.2'
-    compile 'com.squareup.retrofit:retrofit:1.6.+'
-    compile 'com.squareup:otto:1.3.+'
-    compile 'joda-time:joda-time:2.3'
+    compile parent.ext.libraries.butterknife
+    compile parent.ext.libraries.timber
+    compile parent.ext.libraries.robotium
+    compile parent.ext.libraries.jodatime
+    compile parent.ext.libraries.spoonclient
 
-    compile "com.android.support:support-v4:20.+"
-    compile "com.android.support:support-v13:20.+"
-    compile 'com.android.support:appcompat-v7:20.+'
-    compile "com.android.support:mediarouter-v7:19.+"
+    compile parent.ext.libraries.etsy
+    compile parent.ext.libraries.cards
+    compile parent.ext.libraries.hugo
+    compile parent.ext.libraries.picasso
+    compile parent.ext.libraries.retrofit
+    compile parent.ext.libraries.otto
+    compile parent.ext.libraries.roundedimageview
 
-    compile 'com.squareup.picasso:picasso:2.3.2'
-    compile 'com.makeramen:roundedimageview:1.3.0'
-
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.+'
-    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.+'
+    compile parent.ext.libraries.supportv4
+    compile parent.ext.libraries.supportv13
+    compile parent.ext.libraries.appcompat
+    compile parent.ext.libraries.mediarouter
 
     compile project(':domain')
 

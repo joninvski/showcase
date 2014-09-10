@@ -4,7 +4,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
@@ -14,34 +15,47 @@ allprojects {
     }
 }
 
-// TODO - Remove this to differente file
-allprojects {
-    tasks.withType(Compile) {
-        options.compilerArgs << "-Xlint:deprecation"
-    }
-    task printDependencies << {task -> println "Subproject -> $task.project.name" }
+ext {
+    versionMajor = 0
+    versionMinor = 1
+    versionPatch = 0
+
+    versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch
+    versionName = versionMajor + "." + versionMinor + "." + versionPatch
+
+    minSdkVersion = 7
+    targetSdkVersion = 20
+    compileSdkVersion = 20
+    buildToolsVersion = '20.0.0'
 }
 
-subprojects {
-    ext.versionfile = new File('CLASSPATH_AUX')
-    versionfile.text = ''
+ext.libraries = [
+        android_cq_gradle   : 'com.github.nrudenko:gradle-android-cq-plugin:0.1+',
+        androidtools_gradle : 'com.android.tools.build:gradle:0.12.+',
+        cobertura_gradle    : 'net.saliman:gradle-cobertura-plugin:2.2.2',
+        hugo_gradle         : 'com.jakewharton.hugo:hugo-plugin:1.1.+',
+        sdkmanager_gradle   : 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+',
+        spoon_gradle        : 'com.stanfy.spoon:spoon-gradle-plugin:0.10.+',
 
-    printDependencies {
-        afterEvaluate { Project project ->
-            if (configurations.find { it.name == 'compile' }) {
-                doLast {
-                    println "$project.configurations.compile.asPath\n"
-                    versionfile.text += "$project.configurations.compile.asPath"
-                    versionfile.text += ":"
-                }
-            }
-            if (configurations.find { it.name == 'androidTestCompile' }) {
-                doLast {
-                    println "$project.configurations.androidTestCompile.asPath\n"
-                    versionfile.text += "$project.configurations.androidTestCompile.asPath"
-                    versionfile.text += ":"
-                }
-            }
-        }
-    }
-}
+        appcompat           : 'com.android.support:appcompat-v7:19.0.+',
+        butterknife         : 'com.jakewharton:butterknife:5.0.+',
+        cards               : 'com.github.gabrielemariotti.cards:library:1.8.0',
+        etsy                : 'com.etsy.android.grid:library:1.0.+',
+        hugo                : 'com.jakewharton.hugo:hugo-runtime:1.1.+',
+        iconify             : 'com.joanzapata.android:android-iconify:1.0.+',
+        jodatime            : 'joda-time:joda-time:2.3',
+        junit               : 'junit:junit:4.+',
+        mediarouter         : 'com.android.support:mediarouter-v7:19.+',
+        okhttp              : 'com.squareup.okhttp:okhttp:2.+',
+        okhttp_url          : 'com.squareup.okhttp:okhttp-urlconnection:+',
+        otto                : 'com.squareup:otto:1.3.+',
+        picasso             : 'com.squareup.picasso:picasso:2.3.2',
+        retrofit            : 'com.squareup.retrofit:retrofit:1.6.+',
+        robotium            : 'com.jayway.android.robotium:robotium-solo:5.+',
+        roundedimageview    : 'com.makeramen:roundedimageview:1.3.0',
+        spoonclient         : 'com.squareup.spoon:spoon-client:1.1.+',
+        supportv13          : 'com.android.support:support-v13:20.+',
+        supportv4           : 'com.android.support:support-v4:19.1.+',
+        timber              : 'com.jakewharton.timber:timber:2.4.+',
+]
+
