@@ -11,20 +11,20 @@ import android.widget.TextView;
 import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.squareup.picasso.Picasso;
 import com.pifactorial.showcase.R;
-import com.pifactorial.showcase.domain.Ringtone;
+import com.pifactorial.showcase.domain.Thing;
 
 import java.util.List;
 import java.util.Random;
 
-public class SampleAdapter extends ArrayAdapter<Ringtone> {
+public class SampleAdapter extends ArrayAdapter<Thing> {
 
     private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
 
     Activity mActivity;
     int mResource;
-    List<Ringtone> mDataToShow;
+    List<Thing> mDataToShow;
 
-    public SampleAdapter( Activity activity, int resource, List<Ringtone> objects ) {
+    public SampleAdapter( Activity activity, int resource, List<Thing> objects ) {
         super( activity, resource, objects );
 
         this.mActivity = activity;
@@ -57,17 +57,17 @@ public class SampleAdapter extends ArrayAdapter<Ringtone> {
             holder = ( DealHolder ) row.getTag();
         }
 
-        final Ringtone data = mDataToShow.get( position );
+        final Thing data = mDataToShow.get( position );
 
-        // holder.image.setImageResource( Integer.parseInt( data.getUri() ) );
-        Picasso.with( mActivity ).load( data.getUri() ).into( holder.image );
+        // holder.image.setImageResource( Integer.parseInt( data.getImageUrl() ) );
+        Picasso.with( mActivity ).load( data.getImageUrl() ).into( holder.image );
 
         double positionHeight = getPositionRatio( position );
 
         holder.image.setHeightRatio( positionHeight );
 
         holder.title.setText( data.getName() );
-        holder.description.setText( data.getPriceString() );
+        holder.description.setText( data.getCategory() );
 
         return row;
     }
@@ -86,6 +86,7 @@ public class SampleAdapter extends ArrayAdapter<Ringtone> {
     }
 
     private double getRandomHeightRatio() {
-        return ( new Random().nextDouble() / 2.0 ) + 1.0; // height will be 1.0 - 1.5 the width
+        // return ( new Random().nextDouble() / 2.0 ) + 1.0; // height will be 1.0 - 1.5 the width
+        return ( 1 / 2.0 ) + 1.0; // height will be 1.0 - 1.5 the width
     }
 }

@@ -3,7 +3,7 @@ package com.pifactorial.showcase.rest;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.pifactorial.showcase.domain.Call;
-import com.pifactorial.showcase.domain.Ringtone;
+import com.pifactorial.showcase.domain.Thing;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,14 +67,14 @@ public class ShowcaseRestClient {
         }
     }
 
-    static class RingtoneREST {
+    static class ThingREST {
         String id;
         String name;
-        String uri;
-        int price;
+        String imageUrl;
+        String category;
 
-        private Ringtone toDomain() {
-            return new Ringtone( name, uri, price );
+        private Thing toDomain() {
+            return new Thing( name, imageUrl, category );
         }
     }
 
@@ -101,24 +101,24 @@ public class ShowcaseRestClient {
     }
 
     public interface Showcase {
-        @GET( "/v1/ringtones" )
-        void getRingtones( Callback<ArrayList<RingtoneREST>> callback );
+        @GET( "/v1/things" )
+        void getThings( Callback<ArrayList<ThingREST>> callback );
 
         @POST( "/v1/event/add" )
         void insertEvent( @Body EventREST event, Callback<ReturnREST> callback );
     }
 
-    public void getRingtones( ) {
-        Timber.d( "Getting ringtones" );
+    public void getThings( ) {
+        Timber.d( "Getting Things" );
 
-        Callback<ArrayList<RingtoneREST>> callback = new Callback<ArrayList<RingtoneREST>>() {
+        Callback<ArrayList<ThingREST>> callback = new Callback<ArrayList<ThingREST>>() {
             @Override
-            public void success( ArrayList<RingtoneREST> list, Response response ) {
-                ArrayList<Ringtone> retList = new ArrayList<Ringtone>();
-                for( RingtoneREST rest : list )
+            public void success( ArrayList<ThingREST> list, Response response ) {
+                ArrayList<Thing> retList = new ArrayList<Thing>();
+                for( ThingREST rest : list )
                     retList.add( rest.toDomain() );
 
-                Timber.d( "Posting %d ringtones to otto", list.size() );
+                Timber.d( "Posting %d Things to otto", list.size() );
                 mBus.post( retList );
             }
 
@@ -129,7 +129,7 @@ public class ShowcaseRestClient {
             }
         };
 
-        showcase.getRingtones( callback );
+        showcase.getThings( callback );
     }
 
 

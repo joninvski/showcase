@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.pifactorial.showcase.domain.Call;
-import com.pifactorial.showcase.domain.Ringtone;
+import com.pifactorial.showcase.domain.Thing;
 import com.pifactorial.showcase.R;
 import com.pifactorial.showcase.ui.adapter.SampleAdapter;
 import com.pifactorial.showcase.ui.common.BaseFragment;
@@ -29,28 +29,28 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeLayout; // The pull down to refresh view
 
     // Private members
-    private SampleAdapter mAdapter;          // The adapter to show the ringtones
-    private List<Ringtone> mRingtones = new ArrayList<Ringtone>();
+    private SampleAdapter mAdapter;          // The adapter to show the things
+    private List<Thing> mThings = new ArrayList<Thing>();
 
     public static MainFragment newInstance() {
         return new MainFragment();
     }
 
-    public void getRingTonesAssynchronasly() {
-        getRestClient().getRingtones();
+    public void getThingsAssynchronasly() {
+        getRestClient().getThings();
     }
 
     @Subscribe
-    public void onAvailableRingtonesUpdate( ArrayList<Ringtone> ringToneList ) {
-        Timber.d( "Setting the ringtones in the view (called by otto)" );
+    public void onAvailableThingsUpdate( ArrayList<Thing> thingList ) {
+        Timber.d( "Setting the things in the view (called by otto)" );
         StringBuilder sBuild = new StringBuilder();
-        for( Ringtone ring : ringToneList ) {
-            sBuild.append( ring.toString() + '\n' );
+        for( Thing thing : thingList ) {
+            sBuild.append( thing.toString() + '\n' );
         }
-        Timber.d( "Setting these ringtones %s", sBuild.toString() );
+        Timber.d( "Setting these things %s", sBuild.toString() );
 
-        mRingtones.clear();
-        mRingtones.addAll( ringToneList );
+        mThings.clear();
+        mThings.addAll( thingList );
 
         mAdapter.notifyDataSetChanged();
     }
@@ -59,7 +59,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onResume() {
         super.onResume();
-        getRingTonesAssynchronasly();
+        getThingsAssynchronasly();
 
         getCalls();
     }
@@ -78,7 +78,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 
-        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, mRingtones );
+        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, mThings );
         gridView.setAdapter( mAdapter );
 
         mSwipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
@@ -93,8 +93,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        Timber.d( "User asked to to refresh the ringtones" );
-        getRingTonesAssynchronasly();
+        Timber.d( "User asked to to refresh the things" );
+        getThingsAssynchronasly();
     }
 
     @DebugLog
