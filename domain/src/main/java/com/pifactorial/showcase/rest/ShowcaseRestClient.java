@@ -72,9 +72,11 @@ public class ShowcaseRestClient {
         String name;
         String imageUrl;
         String category;
+        String text;
+        String homepage;
 
         private Thing toDomain() {
-            return new Thing( name, imageUrl, category );
+            return new Thing( name, imageUrl, category, text, homepage );
         }
     }
 
