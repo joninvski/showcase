@@ -3,6 +3,11 @@
 
     <color name="clearish_black">#88000000</color>
 
+    <!--- Flag colour -->
+    <color name="flag_red">#FF4444</color>
+    <color name="flag_yellow">#FFBB33</color>
+    <color name="flag_green">#99CC00</color>
+
     <!-- Card Color -->
     <color name="card_background">#FFF</color>
     <color name="card_background_header">#FFF</color>

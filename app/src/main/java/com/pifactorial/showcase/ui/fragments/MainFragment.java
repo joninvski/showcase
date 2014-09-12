@@ -21,11 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AbsListView;
 
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment
+        implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnItemClickListener {
 
     // Layout views
-    private StaggeredGridView gridView;      // The esty style grid cards view
+    private StaggeredGridView mGridView;      // The esty style grid cards view
     private SwipeRefreshLayout mSwipeLayout; // The pull down to refresh view
 
     // Private members
@@ -76,17 +80,19 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
 
-        gridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
+        mGridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
 
         mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, mThings );
-        gridView.setAdapter( mAdapter );
+        mGridView.setAdapter( mAdapter );
+
 
         mSwipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
-        mSwipeLayout.setColorSchemeResources( android.R.color.holo_blue_bright,
-                                              android.R.color.holo_green_light,
-                                              android.R.color.holo_orange_light,
-                                              android.R.color.holo_red_light );
+        mSwipeLayout.setColorSchemeResources( R.color.flag_red,
+                                              R.color.flag_yellow,
+                                              R.color.flag_green,
+                                              R.color.flag_yellow);
         mSwipeLayout.setOnRefreshListener( this );
+        mGridView.setOnItemClickListener(this);
 
         return view;
     }
@@ -115,4 +121,14 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onAttach( Activity activity ) {
         super.onAttach( activity );
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Thing thing = mAdapter.getItem(position);
+        Toast.makeText(getActivity(), "Item Clicked: " + position + " " + thing.getName(), Toast.LENGTH_SHORT).show();
+
+        LayoutInflater in = getActivity().getLayoutInflater(); 
+        in.inflate(R.layout.thing_pop_up, null); //custom_layout is your xml file which contains popuplayout
+    }
+
 }
