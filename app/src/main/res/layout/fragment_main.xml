@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:listSelector="@android:color/black"
-            app:item_margin="4dp"
+            app:item_margin="8dp"
             app:column_count_portrait="2"
             column_count_landscape="3"
             />

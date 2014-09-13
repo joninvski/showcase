@@ -59,3 +59,18 @@ ext.libraries = [
         timber              : 'com.jakewharton.timber:timber:2.4.+',
 ]
 
+
+task generateLogoBitmap(type:Exec) {
+  workingDir './images/'
+
+  //on linux
+  executable './create_images.sh'
+
+  //store the output instead of printing to the console:
+  standardOutput = new ByteArrayOutputStream()
+  ext.output = {
+      return standardOutput.toString()
+    }
+}
+
+
