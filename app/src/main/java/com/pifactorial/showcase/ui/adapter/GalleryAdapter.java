@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.pifactorial.showcase.domain.Thing;
 import com.pifactorial.showcase.R;
 import com.pifactorial.showcase.ui.view.GalleryItemView;
-import com.pifactorial.showcase.ui.view.Image;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 

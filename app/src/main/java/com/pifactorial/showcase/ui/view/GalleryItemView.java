@@ -30,15 +30,6 @@ public class GalleryItemView extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(Image item, Picasso picasso) {
-    request = picasso.load(item.link);
-    aspectRatio = 1f * item.width / item.height;
-    Timber.e("Width %d Height %d", item.width, item.height);
-    requestLayout();
-
-    title.setText(item.title);
-  }
-
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     int mode = MeasureSpec.getMode(widthMeasureSpec);
     if (mode != MeasureSpec.EXACTLY) {
