@@ -7,11 +7,14 @@ public class Thing {
     String mCategory;
     String mText;
     String mHomepage;
+    String mImageWidth;
+    String mImageHeight;
 
     public Thing() {
     }
 
-    public Thing(String name, String imageUrl, String category, String text, String homepage) {
+    public Thing(String name, String imageUrl, String category,
+            String text, String homepage, int width, int height) {
         mName = name;
         mImageUrl = imageUrl;
         mCategory = category;
@@ -51,5 +54,45 @@ public class Thing {
 
     public void setHomepage(String homepage) {
         this.mHomepage = homepage;
+    }
+
+    /**
+     * Get imageWidth.
+     *
+     * @return imageWidth as String.
+     */
+    public String getImageWidth()
+    {
+        return mImageWidth;
+    }
+
+    /**
+     * Set imageWidth.
+     *
+     * @param imageWidth the value to set.
+     */
+    public void setImageWidth(String imageWidth)
+    {
+        this.mImageWidth = imageWidth;
+    }
+
+    /**
+     * Get ImageHeight.
+     *
+     * @return imageHeight as String.
+     */
+    public String getImageHeight()
+    {
+        return mImageHeight;
+    }
+
+    /**
+     * Set imageHeight.
+     *
+     * @param imageHeight the value to set.
+     */
+    public void setImageHeight(String imageHeight)
+    {
+        this.mImageHeight = imageHeight;
     }
 }

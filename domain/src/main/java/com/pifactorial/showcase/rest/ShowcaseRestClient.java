@@ -1,9 +1,10 @@
 package com.pifactorial.showcase.rest;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.otto.Bus;
 import com.pifactorial.showcase.domain.Call;
 import com.pifactorial.showcase.domain.Thing;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.otto.Bus;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import javax.xml.transform.Result;
 
 import retrofit.Callback;
 import retrofit.client.Header;
+import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Field;
@@ -22,13 +24,11 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
 import timber.log.Timber;
-import com.squareup.okhttp.Cache;
-import retrofit.client.OkClient;
-import retrofit.RequestInterceptor;
 
 
 public class ShowcaseRestClient {
@@ -74,9 +74,11 @@ public class ShowcaseRestClient {
         String category;
         String text;
         String homepage;
+        int width;
+        int height;
 
         private Thing toDomain() {
-            return new Thing( name, imageUrl, category, text, homepage );
+            return new Thing( name, imageUrl, category, text, homepage, width, height );
         }
     }
 

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.pifactorial.showcase.domain.Thing;
 import com.pifactorial.showcase.R;
-import com.pifactorial.showcase.ui.view.ForegroundImageView;
 import com.pifactorial.showcase.ui.view.GalleryItemView;
 import com.pifactorial.showcase.ui.view.Image;
 import com.squareup.picasso.Picasso;
@@ -22,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import com.squareup.picasso.RequestCreator;
+import com.etsy.android.grid.util.DynamicHeightImageView;
 
 public class GalleryAdapter extends ArrayAdapter<Thing> {
 
@@ -60,7 +60,7 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
     }
 
     static class DealHolder {
-        ForegroundImageView image;
+        DynamicHeightImageView image;
         TextView title;
         TextView description;
     }
@@ -75,7 +75,7 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
             row = inflater.inflate( mResource, parent, false );
 
             holder = new DealHolder();
-            holder.image = ( ForegroundImageView ) row.findViewById( R.id.image );
+            holder.image = ( DynamicHeightImageView ) row.findViewById( R.id.image );
             holder.title = ( TextView ) row.findViewById( R.id.title );
             holder.description = ( TextView ) row.findViewById( R.id.description );
 
@@ -88,7 +88,8 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
 
 
         // holder.image.setImageResource( Integer.parseInt( data.getImageUrl() ) );
-        RequestCreator request = Picasso.with( mActivity ).load( data.getImageUrl() ).transform(cropPosterTransformation);
+        RequestCreator request = Picasso.with( mActivity ).load( data.getImageUrl() );
+        // RequestCreator request = Picasso.with( mActivity ).load( data.getImageUrl() ).transform(cropPosterTransformation);
 
         request.into(holder.image);
 
@@ -96,6 +97,8 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
 
         holder.title.setText( data.getName() );
         holder.description.setText( data.getCategory() );
+        holder.image.setHeightRatio(1.0);
+
 
         return row;
     }
