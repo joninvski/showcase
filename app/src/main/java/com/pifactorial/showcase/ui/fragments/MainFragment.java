@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.etsy.android.grid.StaggeredGridView;
 import com.pifactorial.showcase.domain.Call;
 import com.pifactorial.showcase.domain.Thing;
 import com.pifactorial.showcase.R;
-import com.pifactorial.showcase.ui.adapter.SampleAdapter;
+import com.pifactorial.showcase.ui.adapter.GalleryAdapter;
 import com.pifactorial.showcase.ui.common.BaseFragment;
 import com.squareup.otto.Subscribe;
 
@@ -24,16 +23,19 @@ import timber.log.Timber;
 import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AbsListView;
+import butterknife.InjectView;
+import butterknife.ButterKnife;
+import com.squareup.picasso.Picasso;
 
 public class MainFragment extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnItemClickListener {
 
     // Layout views
-    private StaggeredGridView mGridView;      // The esty style grid cards view
+    @InjectView(R.id.grid_view) AbsListView mGridView;  // The esty style grid cards view
     private SwipeRefreshLayout mSwipeLayout; // The pull down to refresh view
 
     // Private members
-    private SampleAdapter mAdapter;          // The adapter to show the things
+    private GalleryAdapter mAdapter;          // The adapter to show the things
     private List<Thing> mThings = new ArrayList<Thing>();
 
     public static MainFragment newInstance() {
@@ -80,11 +82,10 @@ public class MainFragment extends BaseFragment
         // Inflate the layout for this fragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
 
-        mGridView = ( StaggeredGridView ) view.findViewById( R.id.grid_view );
-
-        mAdapter = new SampleAdapter( getActivity(), R.layout.list_item_sample, mThings );
+        ButterKnife.inject(this, view);
+  
+        mAdapter = new GalleryAdapter( getActivity(), R.layout.list_item_sample, mThings );
         mGridView.setAdapter( mAdapter );
-
 
         mSwipeLayout = ( SwipeRefreshLayout ) view.findViewById( R.id.swipe_view );
         mSwipeLayout.setColorSchemeResources( R.color.flag_red,
