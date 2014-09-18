@@ -36,17 +36,19 @@ public class MainActivity extends BaseActivity {
         /* The navigation drawer items TODO - add to string array */
         String[] data = {"Main Layout", "Test Layout", "Send fake call"};
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer TODO - Should we use this
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        getSupportActionBar().setHomeButtonEnabled( true );
-
         // Create the adapter for the drawer layout on the left
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getSupportActionBar().getThemedContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_1, data );
         mDrawerList.setAdapter( adapter );
 
         // Start the fragment that shows the ringtones
-        getFragmentManager().beginTransaction().replace( R.id.fragment_container, MainFragment.newInstance() ).commit();
+        getFragmentManager().beginTransaction()
+            .replace( R.id.fragment_container, MainFragment.newInstance() )
+            .addToBackStack(null)
+            .commit();
+
+        // execute transaction now
+        getFragmentManager().executePendingTransactions();
     }
 
     /**

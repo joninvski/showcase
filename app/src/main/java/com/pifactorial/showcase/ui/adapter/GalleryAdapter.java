@@ -63,12 +63,12 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
 
         final Thing data = mDataToShow.get( position );
 
-        RequestCreator request = Picasso.with( mActivity ).load( data.getImageUrl() );
+        RequestCreator request = Picasso.with( mActivity ).load( data.getProductUrl() );
 
         holder.title.setText( data.getName() );
         // TODO - Make this an icon with a URL
         // holder.description.setText( data.getCategory() );
-        holder.image.setHeightRatio((data.getImageHeight() * 1.0) / data.getImageWidth());
+        holder.image.setHeightRatio((data.getProductHeight() * 1.0) / data.getProductWidth());
 
         request.into(holder.image);
 

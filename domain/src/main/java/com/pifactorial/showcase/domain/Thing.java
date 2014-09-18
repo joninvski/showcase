@@ -3,37 +3,44 @@ package com.pifactorial.showcase.domain;
 public class Thing {
 
     String mName;
-    String mImageUrl;
+    String mLogoUrl;
+    String mProductUrl;
     String mCategory;
     String mText;
     String mHomepage;
-    int mImageWidth;
-    int mImageHeight;
+    int mLogoWidth;
+    int mLogoHeight;
+    int mProductWidth;
+    int mProductHeight;
 
     public Thing() {
     }
 
-    public Thing(String name, String imageUrl, String category,
-            String text, String homepage, int width, int height) {
+    public Thing(String name, String logoUrl, String productUrl, String category,
+                 String text, String homepage, int logoWidth, int logoHeight,
+                 int productWidth, int productHeight) {
         mName = name;
-        mImageUrl = imageUrl;
+        mLogoUrl = logoUrl;
+        mProductUrl = productUrl;
         mCategory = category;
         mText = text;
         mHomepage = homepage;
-        mImageWidth = width;
-        mImageHeight = height;
+        mLogoWidth = logoWidth;
+        mLogoHeight = logoHeight;
+        mProductWidth = productWidth;
+        mProductHeight = productHeight;
     }
 
     public String getName() {
         return mName;
     }
 
-    public String getImageUrl() {
-        return mImageUrl;
+    public String getLogoUrl() {
+        return mLogoUrl;
     }
 
     public String toString() {
-        return mName + " -> " + mImageUrl + " " + getCategory();
+        return mName + " -> " + mLogoUrl + " " + getCategory();
     }
 
     public String getCategory() {
@@ -61,42 +68,98 @@ public class Thing {
     }
 
     /**
-     * Get imageWidth.
+     * Get LogoWidth.
      *
-     * @return imageWidth as String.
+     * @return LogoWidth as String.
      */
-    public int getImageWidth()
-    {
-        return mImageWidth;
+    public int getLogoWidth() {
+        return mLogoWidth;
     }
 
     /**
-     * Set imageWidth.
+     * Set LogoWidth.
      *
-     * @param imageWidth the value to set.
+     * @param LogoWidth the value to set.
      */
-    public void setImageWidth(int imageWidth)
-    {
-        this.mImageWidth = imageWidth;
+    public void setLogoWidth(int logoWidth) {
+        this.mLogoWidth = logoWidth;
     }
 
     /**
-     * Get ImageHeight.
+     * Get LogoHeight.
      *
-     * @return imageHeight as String.
+     * @return LogoHeight as String.
      */
-    public int getImageHeight()
-    {
-        return mImageHeight;
+    public int getLogoHeight() {
+        return mLogoHeight;
     }
 
     /**
-     * Set imageHeight.
+     * Set LogoHeight.
      *
-     * @param imageHeight the value to set.
+     * @param LogoHeight the value to set.
      */
-    public void setImageHeight(int imageHeight)
+    public void setLogoHeight(int logoHeight) {
+        this.mLogoHeight = logoHeight;
+    }
+
+    /**
+     * Get mProductWidth.
+     *
+     * @return mProductWidth as int.
+     */
+    public int getProductWidth()
     {
-        this.mImageHeight = imageHeight;
+        return mProductWidth;
+    }
+
+    /**
+     * Set mProductWidth.
+     *
+     * @param mProductWidth the value to set.
+     */
+    public void setProductWidth(int mProductWidth)
+    {
+        this.mProductWidth = mProductWidth;
+    }
+
+    /**
+     * Get productHeight.
+     *
+     * @return mProductHeight as int.
+     */
+    public int getProductHeight()
+    {
+        return mProductHeight;
+    }
+
+    /**
+     * Set productHeight.
+     *
+     * @param mProductHeight the value to set.
+     */
+    public void setProductHeight(int productHeight)
+    {
+        this.mProductHeight = productHeight;
+    }
+
+    /**
+     * Get productUrl.
+     *
+     * @return productUrl as String.
+     */
+    public String getProductUrl()
+    {
+        return mProductUrl;
+    }
+
+    /**
+     * Set productUrl.
+     *
+     * @param productUrl the value to set.
+     */
+    public void setMProductUrl(String productUrl)
+    {
+        this.mProductUrl = productUrl;
     }
 }

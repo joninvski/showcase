@@ -130,8 +130,16 @@ public class MainFragment extends BaseFragment
         Thing thing = mAdapter.getItem(position);
         Toast.makeText(getActivity(), "Item Clicked: " + position + " " + thing.getName(), Toast.LENGTH_SHORT).show();
 
-        LayoutInflater in = getActivity().getLayoutInflater(); 
+        LayoutInflater in = getActivity().getLayoutInflater();
         in.inflate(R.layout.thing_pop_up, null); //custom_layout is your xml file which contains popuplayout
-    }
 
+        getFragmentManager().beginTransaction().replace(
+            R.id.fragment_container,
+            ThingDetailFragment.newInstance(thing.getLogoUrl(), thing.getText()))
+            .addToBackStack(null)
+            .commit();
+
+        // execute transaction now
+        getFragmentManager().executePendingTransactions();
+    }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import com.pifactorial.showcase.application.App;
@@ -19,6 +18,7 @@ import hugo.weaving.DebugLog;
 import retrofit.RetrofitError;
 
 import timber.log.Timber;
+import android.app.Activity;
 
 /*
  * Provides an abstraction for all activities to extend
@@ -28,7 +28,7 @@ import timber.log.Timber;
  *
  * It also binds the activity to the service which tracks calls.
  * */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends Activity {
 
     // The connection for the counter service (TODO - This should be injected in the future)
     private ServiceConnection mSvcConn = prepareServiceConnection();

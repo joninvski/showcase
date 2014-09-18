@@ -70,15 +70,18 @@ public class ShowcaseRestClient {
     static class ThingREST {
         String id;
         String name;
-        String imageUrl;
-        String category;
         String text;
+        String category;
         String homepage;
-        int width;
-        int height;
+        String urlLogo;
+        String urlProduct;
+        int logoWidth;
+        int logoHeight;
+        int productWidth;
+        int productHeight;
 
         private Thing toDomain() {
-            return new Thing( name, imageUrl, category, text, homepage, width, height );
+            return new Thing( name, urlLogo, urlProduct, category, text, homepage, logoWidth, logoHeight, productWidth, productHeight );
         }
     }
 
