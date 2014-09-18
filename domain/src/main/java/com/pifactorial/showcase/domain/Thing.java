@@ -7,8 +7,8 @@ public class Thing {
     String mCategory;
     String mText;
     String mHomepage;
-    String mImageWidth;
-    String mImageHeight;
+    int mImageWidth;
+    int mImageHeight;
 
     public Thing() {
     }
@@ -18,6 +18,10 @@ public class Thing {
         mName = name;
         mImageUrl = imageUrl;
         mCategory = category;
+        mText = text;
+        mHomepage = homepage;
+        mImageWidth = width;
+        mImageHeight = height;
     }
 
     public String getName() {
@@ -61,7 +65,7 @@ public class Thing {
      *
      * @return imageWidth as String.
      */
-    public String getImageWidth()
+    public int getImageWidth()
     {
         return mImageWidth;
     }
@@ -71,7 +75,7 @@ public class Thing {
      *
      * @param imageWidth the value to set.
      */
-    public void setImageWidth(String imageWidth)
+    public void setImageWidth(int imageWidth)
     {
         this.mImageWidth = imageWidth;
     }
@@ -81,7 +85,7 @@ public class Thing {
      *
      * @return imageHeight as String.
      */
-    public String getImageHeight()
+    public int getImageHeight()
     {
         return mImageHeight;
     }
@@ -91,7 +95,7 @@ public class Thing {
      *
      * @param imageHeight the value to set.
      */
-    public void setImageHeight(String imageHeight)
+    public void setImageHeight(int imageHeight)
     {
         this.mImageHeight = imageHeight;
     }

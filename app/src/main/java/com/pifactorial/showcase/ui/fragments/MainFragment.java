@@ -83,7 +83,7 @@ public class MainFragment extends BaseFragment
         final View view = inflater.inflate( R.layout.fragment_main, container, false );
 
         ButterKnife.inject(this, view);
-  
+
         mAdapter = new GalleryAdapter( getActivity(), R.layout.list_item_sample, mThings );
         mGridView.setAdapter( mAdapter );
 
