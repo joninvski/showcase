@@ -59,7 +59,6 @@ ext.libraries = [
         timber              : 'com.jakewharton.timber:timber:2.4.+',
 ]
 
-
 task generateLogoBitmap(type:Exec) {
   workingDir './images/'
 
@@ -73,4 +72,30 @@ task generateLogoBitmap(type:Exec) {
     }
 }
 
+allprojects {
+      tasks.withType(Compile) {
+                options.compilerArgs << "-Xlint:deprecation"
+            }
+      task printDependencies << {task -> println "Subproject -> $task.project.name" }
+ }
 
+subprojects {
+   ext.versionfile = new File('CLASSPATH_AUX')
+   versionfile.text = ''
+
+   printDependencies {
+          afterEvaluate { Project project ->
+                     if (configurations.find { it.name == 'compile' }) {
+                                    doLast {
+                                                       println "$project.configurations.compile.asPath\n"
+                                                       versionfile.text += "$project.configurations.compile.asPath"
+                                                   }
+                                }
+                     if (configurations.find { it.name == 'androidTestCompile' }) {
+                                    doLast {
+                                                       println "$project.configurations.androidTestCompile.asPath\n"
+                                                       versionfile.text += "$project.configurations.androidTestCompile.asPath"
+                                                   }
+                                }
+                 }
+      }}

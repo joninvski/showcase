@@ -59,6 +59,8 @@ public class MainFragment extends BaseFragment
         mThings.addAll( thingList );
 
         mAdapter.notifyDataSetChanged();
+
+        mSwipeLayout.setRefreshing(false);
     }
 
     @DebugLog
