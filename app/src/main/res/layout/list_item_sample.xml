@@ -33,7 +33,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:layout_alignParentLeft="true"
-            android:textSize="18sp"
+            android:textSize="14sp"
             />
 
         <TextView
