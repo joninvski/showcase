@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="green_action_bar">#33691e</color>
+    <!-- Action bar -->
+    <color name="green_action_bar">#e51c23</color>
+    <color name="white_action_bar">#ffffff</color>
 
     <!--- Flag colour -->
     <color name="flag_red">#FF4444</color>

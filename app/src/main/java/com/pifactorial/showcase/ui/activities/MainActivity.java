@@ -49,6 +49,8 @@ public class MainActivity extends BaseActivity {
 
         // execute transaction now
         getFragmentManager().executePendingTransactions();
+
+        getActionBar().setDisplayShowTitleEnabled( true );
     }
 
     /**
