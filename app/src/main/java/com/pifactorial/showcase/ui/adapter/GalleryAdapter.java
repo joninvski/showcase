@@ -39,7 +39,6 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
     static class DealHolder {
         DynamicHeightImageView image;
         TextView title;
-        TextView description;
     }
 
     @Override
@@ -54,7 +53,6 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
             holder = new DealHolder();
             holder.image = ( DynamicHeightImageView ) row.findViewById( R.id.image );
             holder.title = ( TextView ) row.findViewById( R.id.title );
-            holder.description = ( TextView ) row.findViewById( R.id.description );
 
             row.setTag( holder );
         } else {
@@ -67,7 +65,6 @@ public class GalleryAdapter extends ArrayAdapter<Thing> {
 
         holder.title.setText( data.getName() );
         // TODO - Make this an icon with a URL
-        // holder.description.setText( data.getCategory() );
         holder.image.setHeightRatio((data.getProductHeight() * 1.0) / data.getProductWidth());
 
         request.into(holder.image);
