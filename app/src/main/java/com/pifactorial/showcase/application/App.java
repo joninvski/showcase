@@ -70,7 +70,7 @@ public class App extends Application {
             public void intercept( RequestFacade request ) {
                 request.addHeader( "Accept", "application/json;versions=1" );
                 if ( isOnline() ) {
-                    int maxAge = 30; // read from cache for 0.5 minute
+                    int maxAge = 60 * 5; // read from cache for 5 minute
                     request.addHeader( "Cache-Control", "public, max-age=" + maxAge );
                     Timber.d( "Using online 30 seconds cache" );
                 } else {
